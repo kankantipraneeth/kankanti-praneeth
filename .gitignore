@@ -44,3 +44,6 @@ next-env.d.ts
 
 # impeccable reference downloads
 .impeccable/ref/
+
+# superpowers plan workspace
+.superpowers/
