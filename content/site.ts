@@ -38,9 +38,28 @@ export type Project = {
   built: string[];
   results: (string | Todo)[];
   liveUrl: string | null;
-  githubUrl: string | Todo | null;
+  githubUrl: string | null;
+  /** Real Lighthouse runs against liveUrl. Raw reports are in docs/lighthouse/. */
+  lighthouse?: Lighthouse;
+  /** Genuine screenshots or recordings only. Paths are relative to public/. */
+  gallery: { src: string; alt: string }[];
   featured: boolean;
   order: number;
+};
+
+export type LighthouseScores = {
+  performance: number;
+  accessibility: number;
+  bestPractices: number;
+  /** Omitted when the score reflects hosting config rather than the site's SEO work. */
+  seo?: number;
+};
+
+export type Lighthouse = {
+  measured: string; // YYYY-MM-DD
+  tool: string;
+  mobile: LighthouseScores;
+  desktop: LighthouseScores;
 };
 
 export type SkillGroupName =
@@ -63,9 +82,13 @@ export type SkillGroup = {
 
 export type Certification = {
   name: string;
+  /** What kind of credential it is, so nothing reads as more than it is. */
+  kind: "Certification" | "Course completion" | "Certificate of proficiency";
   issuer: string;
-  year: string | null;
-  credentialUrl: string | Todo;
+  issued: string; // YYYY-MM-DD, or YYYY-MM for a period that ended that month
+  credentialId: string | null;
+  /** Public verification page. null when the issuer has no public link. */
+  verifyUrl: string | null;
 };
 
 export type Education = {
@@ -86,7 +109,7 @@ export const profile: Profile = {
   linkedin: "https://www.linkedin.com/in/praneeth-kankanti-148317258",
   github: "https://github.com/kankantipraneeth",
   resumeUrl: "/resume.pdf",
-  photo: "TODO: add a portrait to public/ (e.g. public/praneeth.jpg)",
+  photo: "/praneeth.webp",
 };
 
 export const summary: [string, string] = [
@@ -103,13 +126,11 @@ export const experience: Experience[] = [
     location: "Hyderabad",
     start: "2025-05",
     end: "2025-06",
-    // TODO: rewrite as 2-3 concrete outcomes (what you built, for whom, what changed).
+    // Rewritten from the resume bullets only. No metrics exist for this work, so none are claimed.
     bullets: [
-      "Built AI-driven workflows using Python for automation and data processing.",
-      "Performed data validation, cleaning and preprocessing.",
-      "Assisted in developing and improving AI automation pipelines.",
-      "Collaborated with teams to design scalable AI-based solutions.",
-      "Documented workflows and supported deployment preparation.",
+      "Built Python workflows that automate data validation, cleaning and preprocessing, giving the team's AI automation pipelines clean, consistent input data.",
+      "Worked with the team to develop and improve those AI automation pipelines and design AI-based solutions built to scale.",
+      "Documented the workflows and supported deployment preparation, so the pipelines could be handed over and deployed.",
     ],
   },
 ];
@@ -134,10 +155,18 @@ export const projects: Project[] = [
       "Live in production; the client manages products, images and descriptions without code changes.",
       "Bilingual site (English and Telugu).",
       "Enquiries are captured as leads in HubSpot CRM.",
-      "TODO: one number (Lighthouse score, number of products/pages, or enquiries captured).",
+      "Lighthouse accessibility 100 on mobile; performance 99 on desktop.",
     ],
     liveUrl: "https://koshetty-jewellers.vercel.app",
-    githubUrl: "TODO: GitHub repo link (or null if the client repo is private)",
+    lighthouse: {
+      measured: "2026-10-02",
+      tool: "Lighthouse 12",
+      // SEO left out: the vercel.app domain sets noindex + robots.txt "Disallow: /", which drops the score to 69.
+      mobile: { performance: 87, accessibility: 100, bestPractices: 100 },
+      desktop: { performance: 99, accessibility: 99, bestPractices: 100 },
+    },
+    githubUrl: "https://github.com/kankantipraneeth/koshetty-jewellers",
+    gallery: [],
     featured: true,
     order: 1,
   },
@@ -158,10 +187,18 @@ export const projects: Project[] = [
     results: [
       "Live in production; enquiries flow into HubSpot CRM as leads.",
       "Content is editable by the client through Sanity CMS.",
-      "TODO: one number (Lighthouse score, pages, or leads captured).",
+      "Lighthouse accessibility 100 and SEO 100 on mobile and desktop; performance 99 on desktop.",
     ],
     liveUrl: "https://sunshine-overseas.vercel.app",
-    githubUrl: "TODO: GitHub repo link (or null if the client repo is private)",
+    lighthouse: {
+      measured: "2026-10-02",
+      tool: "Lighthouse 12",
+      mobile: { performance: 90, accessibility: 100, bestPractices: 96, seo: 100 },
+      desktop: { performance: 99, accessibility: 100, bestPractices: 96, seo: 100 },
+    },
+    // Client-owned private repository. Never link it.
+    githubUrl: null,
+    gallery: [],
     featured: true,
     order: 2,
   },
@@ -182,10 +219,10 @@ export const projects: Project[] = [
     results: [
       "Live web app on Streamlit.",
       "Reduces manual analysis effort through automation.",
-      "TODO: one number (e.g. time from upload to report, dataset sizes handled).",
     ],
     liveUrl: "https://auto-eda-ai-assisted.streamlit.app",
-    githubUrl: "TODO: GitHub repo link",
+    githubUrl: "https://github.com/kankantipraneeth/auto-eda-ai",
+    gallery: [],
     featured: true,
     order: 3,
   },
@@ -193,40 +230,46 @@ export const projects: Project[] = [
     slug: "whatsapp-automation-bot",
     title: "AI-Powered WhatsApp Automation Bot",
     subtitle: "Automation project",
-    stack: ["n8n", "REST APIs", "AI Automation"],
-    problem: "TODO: who used the bot and what problem it solved (e.g. answering enquiries, booking, notifications).",
-    role: "TODO: solo or team project? Your role.",
+    stack: ["n8n", "LLM", "WhatsApp", "REST APIs"],
+    problem:
+      "A client was answering repetitive WhatsApp queries by hand. Every reply needed a person, even for questions that had been answered many times before.",
+    role: "Built the n8n automation workflow: connected incoming client queries to an LLM, configured the n8n nodes and workflow logic, and implemented the automated response flow.",
     built: [
-      "Built workflow automation systems using n8n.",
-      "Integrated APIs for automated messaging.",
-      "Designed intelligent response workflows.",
-      "Implemented real-time communication automation.",
+      "Built an n8n workflow that receives client queries from WhatsApp in real time.",
+      "Connected the workflow to an LLM through API nodes to process each query and generate a reply.",
+      "Configured the node logic that routes each query and sends the generated response back to the client on WhatsApp.",
     ],
-    results: [
-      "TODO: one number (messages handled, response time, workflows automated).",
-      "TODO: 20-40s demo video/GIF of the bot in action.",
-    ],
+    results: ["Client queries on WhatsApp are answered automatically by the LLM instead of manually."],
     liveUrl: null,
-    githubUrl: "TODO: GitHub repo link (or exported n8n workflow)",
+    githubUrl: null,
+    // No genuine screen recording exists yet, so there is no demo.
+    gallery: [],
     featured: true,
     order: 4,
   },
   {
     slug: "sturequire",
     title: "StuRequire",
-    subtitle: "Student requirement tracking system",
+    subtitle: "Student task & reminder web app",
     stack: ["Node.js", "Express.js", "SQL"],
-    problem: "TODO: one line on what student requirements it tracks and for whom.",
-    role: "TODO: solo or team project? Your role.",
+    problem: "Students forget daily tasks and assignments. StuRequire lets them add tasks and sends a daily reminder to complete them.",
+    role: "Built the application with Node.js and Express: task management for students and daily reminders.",
     built: [
-      "Developed a full-stack web application.",
+      "Developed a full-stack web application where students add and track their tasks.",
+      "Implemented daily reminders for pending tasks.",
       "Implemented authentication and validation.",
-      "Built REST APIs for data management.",
-      "Designed structured database workflows.",
+      "Built REST APIs and structured database workflows for data management.",
     ],
-    results: ["TODO: one outcome or number."],
+    results: ["Runs locally; not deployed."],
     liveUrl: null,
-    githubUrl: "TODO: GitHub repo link",
+    // Source lives only on Praneeth's machine. Never add a repo link here.
+    githubUrl: null,
+    // Real screenshots from June 2024 (browser chrome cropped). The task/reminder screens were not captured.
+    gallery: [
+      { src: "/work/sturequire/home.webp", alt: "StuRequire home page with the student portal's feature list" },
+      { src: "/work/sturequire/login.webp", alt: "StuRequire sign-in page with email, password and Google sign-in" },
+      { src: "/work/sturequire/register.webp", alt: "StuRequire registration form with year, branch and section fields" },
+    ],
     featured: false,
     order: 5,
   },
@@ -293,11 +336,47 @@ export const skills: SkillGroup[] = [
 ];
 
 export const certifications: Certification[] = [
-  { name: "OCI AI Foundations Associate", issuer: "Oracle Cloud Infrastructure", year: "2025", credentialUrl: "TODO: credential link" },
-  { name: "Azure AI Engineer Associate", issuer: "Microsoft Azure", year: null, credentialUrl: "TODO: credential link" },
-  { name: "Machine Learning Foundations", issuer: "AWS Academy", year: null, credentialUrl: "TODO: credential link" },
-  { name: "Cloud Foundations", issuer: "AWS Academy", year: null, credentialUrl: "TODO: credential link" },
-  { name: "Data Science", issuer: "Wipro TalentNext", year: null, credentialUrl: "TODO: credential link" },
+  // Details copied from the certificate PDFs.
+  {
+    name: "OCI 2025 Certified AI Foundations Associate",
+    kind: "Certification",
+    issuer: "Oracle University",
+    issued: "2025-10-29",
+    credentialId: "323394931OCI25AICFA",
+    verifyUrl: null, // TODO: paste the Oracle CertView / Credly share link if you have one
+  },
+  {
+    name: "Microsoft Azure AI Engineer Associate",
+    kind: "Certificate of proficiency",
+    issuer: "ICT Academy (in association with Microsoft), Grade A",
+    issued: "2025-03-06",
+    credentialId: "S25-36458",
+    verifyUrl: "https://verify.ictacademy.in",
+  },
+  {
+    name: "AWS Academy Machine Learning Foundations",
+    kind: "Course completion",
+    issuer: "AWS Academy",
+    issued: "2023-10-25",
+    credentialId: null,
+    verifyUrl: "https://www.credly.com/go/ykbyds04",
+  },
+  {
+    name: "AWS Academy Cloud Foundations",
+    kind: "Course completion",
+    issuer: "AWS Academy",
+    issued: "2023-10-25",
+    credentialId: null,
+    verifyUrl: "https://www.credly.com/go/kWiPtD7j",
+  },
+  {
+    name: "Data Science (Digital Skills Readiness Program)",
+    kind: "Course completion",
+    issuer: "Wipro TalentNext",
+    issued: "2025-10",
+    credentialId: "TNext_SE_25_DS_252460229",
+    verifyUrl: null,
+  },
 ];
 
 export const education: Education[] = [
