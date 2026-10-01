@@ -165,7 +165,8 @@ export const projects: Project[] = [
       mobile: { performance: 87, accessibility: 100, bestPractices: 100 },
       desktop: { performance: 99, accessibility: 99, bestPractices: 100 },
     },
-    githubUrl: "https://github.com/kankantipraneeth/koshetty-jewellers",
+    // Private repository. Never link it.
+    githubUrl: null,
     gallery: [],
     featured: true,
     order: 1,
