@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { profile } from "@/content/site";
 import { anek, anekTelugu, martian } from "./fonts";
 import "./globals.css";
@@ -17,10 +18,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${anek.variable} ${anekTelugu.variable} ${martian.variable}`} suppressHydrationWarning>
       <body className="min-h-svh bg-ink font-sans text-paper antialiased">
-        <a href="#main" className="skip-link label">
-          Skip to content
-        </a>
-        <main id="main">{children}</main>
+        <SmoothScroll>
+          <a href="#main" className="skip-link label">
+            Skip to content
+          </a>
+          <main id="main">{children}</main>
+        </SmoothScroll>
       </body>
     </html>
   );
