@@ -17,6 +17,7 @@ Next.js App Router, TypeScript, Tailwind v4, GSAP (@gsap/react useGSAP, ScrollTr
 ## Code rules
 - Pages are server components. Animation code only in small "use client" components.
 - Animate transform and opacity only. Clean up every ScrollTrigger.
+  Exception (approved): font-variation-settings may animate on the single hero/loader specimen glyph, which sits in a fixed-size `contain: strict` box.
 - Respect prefers-reduced-motion. No pinning below 768px.
 - Use next/image and next/font. Keep JS per route small.
 

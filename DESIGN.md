@@ -19,7 +19,7 @@ All fonts via `next/font/google`, variable, `display: "swap"`.
 | Role | Face | Axes used | Notes |
 |---|---|---|---|
 | Display + body | **Anek Latin** (Ek Type) | `wdth` 75–125, `wght` 100–800 | One family for everything readable. Display uses wide/heavy instances; body uses `wdth 100`. |
-| Specimen glyph | **Anek Telugu** (`telugu` subset only) | same | Only for the hero/loader glyph "ప్ర". **Confirm the Telugu is right before building.** |
+| Specimen glyph | **Anek Telugu** (`telugu` subset only) | same | Only for the hero/loader glyph "ప్ర" ("Pra" of ప్రణీత్, confirmed by Praneeth). |
 | Readouts, labels, data | **Martian Mono** | `wdth` 75–112.5, `wght` 100–800 | Axis readouts, section labels, stack lists, scores, dates. Uppercase labels only. |
 
 Why these: Anek is a variable family from an Indian foundry, built for Latin and Telugu together. It matches the bilingual (English/Telugu) client work and gives real `wdth` + `wght` axes for the specimen mechanic. Martian Mono has its own width axis, so readouts can track the hero axis too.
@@ -113,7 +113,7 @@ Mobile (375): readout → name → role line → glyph (≈60vw) with a horizont
 - Keyboard: arrow keys step by 5, Home/End jump to the ends, the preset buttons are focusable. State is announced through `aria-valuetext` ("AI").
 - **Reduced motion:** the slider snaps between the three named instances; no interpolation.
 
-**Rule exception to approve:** CLAUDE.md says to animate only `transform` and `opacity`. The specimen mechanic needs `font-variation-settings` on exactly **one** element: the hero/loader glyph. It sits in a fixed-size, `contain: strict` box, so changing it can't shift layout anywhere else. Everything else follows the transform/opacity rule.
+**Rule exception (approved, recorded in CLAUDE.md):** CLAUDE.md says to animate only `transform` and `opacity`. The specimen mechanic needs `font-variation-settings` on exactly **one** element: the hero/loader glyph. It sits in a fixed-size, `contain: strict` box, so changing it can't shift layout anywhere else. Everything else follows the transform/opacity rule.
 
 ## 6. Components
 

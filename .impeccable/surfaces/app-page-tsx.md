@@ -25,5 +25,5 @@ FINISH: unreviewed and undocumented is unfinished; this build ends with the fini
 
 ## Open decisions
 
-- Telugu glyph ప్ర in the specimen rotation: needs Praneeth's confirmation.
-- Animating font-variation-settings is allowed only on the isolated hero/loader glyph (needs a CLAUDE.md rule exception).
+- Telugu glyph ప్ర confirmed.
+- font-variation-settings animation on the hero/loader glyph approved (CLAUDE.md exception).
