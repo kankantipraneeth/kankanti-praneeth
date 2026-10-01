@@ -2,6 +2,8 @@
 // Rules: never invent facts or numbers. Anything missing is a string starting with "TODO".
 // The phone number is deliberately excluded (it lives only in public/resume.pdf).
 
+import type { RoleStop } from "@/lib/specimen";
+
 /** Marker for data that still has to be filled in by Praneeth. */
 export type Todo = `TODO${string}`;
 
@@ -28,6 +30,8 @@ export type Experience = {
   bullets: string[];
 };
 
+export type ProjectImage = { src: string; width: number; height: number; alt: string };
+
 export type Project = {
   slug: string;
   title: string;
@@ -45,6 +49,16 @@ export type Project = {
   gallery: { src: string; alt: string }[];
   featured: boolean;
   order: number;
+  /** Which end of the Web ⟷ AI role axis this project belongs to. */
+  track: "web" | "ai";
+  /** live = public URL; private = runs for a client, no public demo; local = never deployed. */
+  deployment: "live" | "private" | "local";
+  /** public = githubUrl set; private-client = client-owned repo; none = no repository to show. */
+  repo: "public" | "private-client" | "none";
+  /** Main screenshot. null when no genuine screenshot exists. */
+  image: ProjectImage | null;
+  /** Typographic flow shown instead of a screenshot (only real steps from the project). */
+  flow?: string[];
 };
 
 export type LighthouseScores = {
@@ -117,6 +131,13 @@ export const summary: [string, string] = [
   "On the AI side I work with Python, LangChain, LLMs, MCP and n8n to build multi-agent systems and workflow automation, backed by an AI Engineering internship at Viswam.AI. I studied Computer Science (B.Tech, 2022–2026) in Hyderabad.",
 ];
 
+/** Role line under the name, one true statement per stop of the Web ⟷ AI axis. */
+export const roleLines: Record<RoleStop, string> = {
+  web: "I build production websites: Next.js front ends with Sanity CMS, HubSpot CRM, SEO and deployment.",
+  fullstack: "I build production websites and AI automations, from requirements to deployment.",
+  ai: "I build AI automations: n8n workflows that connect an LLM to WhatsApp, and an AI-powered data analysis platform.",
+};
+
 export const experience: Experience[] = [
   {
     id: "viswam-ai",
@@ -170,6 +191,10 @@ export const projects: Project[] = [
     gallery: [],
     featured: true,
     order: 1,
+    track: "web",
+    deployment: "live",
+    repo: "private-client",
+    image: { src: "/work/koshetty-jewellers.webp", width: 1440, height: 900, alt: "Koshetty Jewellers home page" },
   },
   {
     slug: "sunshine-overseas",
@@ -202,6 +227,10 @@ export const projects: Project[] = [
     gallery: [],
     featured: true,
     order: 2,
+    track: "web",
+    deployment: "live",
+    repo: "private-client",
+    image: { src: "/work/sunshine-overseas.webp", width: 1440, height: 900, alt: "Sunshine Overseas home page" },
   },
   {
     slug: "auto-eda-ai",
@@ -226,6 +255,10 @@ export const projects: Project[] = [
     gallery: [],
     featured: true,
     order: 3,
+    track: "ai",
+    deployment: "live",
+    repo: "public",
+    image: { src: "/work/auto-eda-ai.webp", width: 1440, height: 900, alt: "Auto-EDA AI Streamlit app" },
   },
   {
     slug: "whatsapp-automation-bot",
@@ -247,6 +280,11 @@ export const projects: Project[] = [
     gallery: [],
     featured: true,
     order: 4,
+    track: "ai",
+    deployment: "private",
+    repo: "none",
+    image: null,
+    flow: ["Client query on WhatsApp", "n8n workflow", "LLM", "Automated reply"],
   },
   {
     slug: "sturequire",
@@ -273,6 +311,10 @@ export const projects: Project[] = [
     ],
     featured: false,
     order: 5,
+    track: "web",
+    deployment: "local",
+    repo: "none",
+    image: { src: "/work/sturequire/home.webp", width: 1266, height: 617, alt: "StuRequire home page with the student portal's feature list" },
   },
 ];
 
