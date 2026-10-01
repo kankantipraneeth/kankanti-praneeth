@@ -210,7 +210,7 @@ export const projects: Project[] = [
     stack: ["Python", "Pandas", "Matplotlib", "Streamlit"],
     problem:
       "Exploratory data analysis is repetitive manual work: every new dataset needs cleaning, preprocessing, summary statistics and charts before any real analysis starts.",
-    role: "TODO: solo or team project? Your role.",
+    role: "Solo project: designed, built and deployed the whole platform, from data cleaning and analysis to the Streamlit app.",
     built: [
       "Developed an AI-powered exploratory data analysis platform.",
       "Automated dataset cleaning and preprocessing workflows.",
