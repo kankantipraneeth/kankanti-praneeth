@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Footer } from "@/components/layout/Footer";
 import { Nav } from "@/components/layout/Nav";
+import { Loader } from "@/components/loader/Loader";
+import { LOADER_SCRIPT } from "@/components/loader/loader-script";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { profile } from "@/content/site";
 import { anek, anekTelugu, martian } from "./fonts";
@@ -19,8 +21,12 @@ export const viewport: Viewport = { themeColor: "#0D0C0A", colorScheme: "dark" }
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${anek.variable} ${anekTelugu.variable} ${martian.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: LOADER_SCRIPT }} />
+      </head>
       <body className="min-h-svh bg-ink font-sans text-paper antialiased">
         <SmoothScroll>
+          <Loader />
           <a href="#main" className="skip-link label">
             Skip to content
           </a>

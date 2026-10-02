@@ -123,6 +123,15 @@
   .nav[data-open="true"]::before {
     opacity: 1;
   }
+  .loader {
+    display: none;
+  }
+  html[data-loader] .loader {
+    display: grid;
+  }
+  html[data-loader] body {
+    overflow: hidden;
+  }
   .glyph-box {
     contain: strict;
     container-type: size;
