@@ -92,6 +92,8 @@ export function SelectedWork() {
     { dependencies: [stop, pinnedSkill, reduced], scope: section },
   );
 
+  const filterActive = pinnedSkill !== null || stop !== "fullstack";
+  const matchLabel = pinnedSkill ?? `${STOP_LABELS[stop]} work`;
   const emphasisLabel = pinnedSkill ? `Pinned: ${pinnedSkill}` : stop === "fullstack" ? "All work" : `${STOP_LABELS[stop]} work highlighted`;
 
   return (
@@ -112,7 +114,7 @@ export function SelectedWork() {
       </div>
       <div ref={track} className="flex flex-col px-margin group-data-[track=horizontal]/work:min-h-0 group-data-[track=horizontal]/work:flex-1 group-data-[track=horizontal]/work:flex-row group-data-[track=horizontal]/work:items-center group-data-[track=horizontal]/work:pb-16">
         {featuredProjects.map((project, index) => (
-          <WorkSheet key={project.slug} project={project} index={index} total={total} />
+          <WorkSheet key={project.slug} project={project} index={index} total={total} match={filterActive && isEmphasized(project, stop, pinnedSkill, skills) ? matchLabel : null} />
         ))}
       </div>
     </section>

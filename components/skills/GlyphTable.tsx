@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, type KeyboardEvent } from "react";
+import { useRef, type KeyboardEvent, type MouseEvent } from "react";
 import { projects, skills } from "@/content/site";
 import { gsap, MQ, useGSAP } from "@/components/motion/gsap-setup";
+import { useScrollTo } from "@/components/motion/SmoothScroll";
 import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { useSpecimen } from "@/components/specimen/SpecimenProvider";
 import { projectsUsingSkill } from "@/lib/skills";
@@ -36,6 +37,12 @@ export function GlyphTable() {
     { dependencies: [pinnedSkill, reduced], scope: root },
   );
 
+  const scrollTo = useScrollTo();
+  const seeWork = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    scrollTo("#work");
+  };
+
   const onKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Escape" && pinnedSkill) setPinnedSkill(null);
   };
@@ -56,6 +63,14 @@ export function GlyphTable() {
                 </Link>
               </span>
             ))}
+            {pinnedProjects.some((project) => project.featured) ? (
+              <a href="#work" onClick={seeWork} className="group ml-4 inline-flex min-h-11 items-center gap-2 font-semibold text-accent">
+                See them in Selected work
+                <span aria-hidden="true" className="arrow">
+                  ↑
+                </span>
+              </a>
+            ) : null}
           </>
         ) : (
           <>
