@@ -1,6 +1,7 @@
 import { certifications, education } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { formatIssued } from "@/lib/format";
+import { Arrow } from "@/components/ui/Arrow";
 
 export function Credentials() {
   return (
@@ -19,7 +20,10 @@ export function Credentials() {
                 <span className="font-mono text-readout">{formatIssued(cert.issued)}</span>
                 {cert.verifyUrl ? (
                   <a href={cert.verifyUrl} target="_blank" rel="noopener noreferrer" className="group label inline-flex min-h-11 items-center gap-1 hover:text-accent">
-                    Verify <span aria-hidden="true" className="arrow">↗</span>
+                    Verify{" "}
+                    <span aria-hidden="true" className="arrow">
+                      <Arrow direction="up-right" />
+                    </span>
                     <span className="sr-only"> {cert.name} (opens in a new tab)</span>
                   </a>
                 ) : (

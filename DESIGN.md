@@ -160,3 +160,17 @@ Case studies: `/work/[slug]` for the four featured projects and StuRequire.
 - Do use the accent only for active state, focus and the primary action. Don't use it for decoration or section backgrounds.
 - Do show real screenshots and real scores. Don't invent metrics, logos or testimonials.
 - Don't show the phone number anywhere.
+
+## 9. Phase 8 refinements (critique → clarify, layout, adapt, bolder, distill, polish)
+
+- **No eyebrows or section numbers** above headings: each heading carries its own weight and states a fact ("Shipped for real clients and real users", "From requirements to deployment", "AI engineering at Viswam.AI").
+- **Hero proof line** from `heroProof` in `content/site.ts`, verified against project data by `lib/content.test.ts`.
+- **Work filter** in plain language: "Filter my work", slider "Show my work" (announced as "Web/Full-stack/AI work"), presets under "Jump to" (stacked rows on desktop), a mobile-only mirror of the role line, and "See N projects" jumping to Selected Work. The decorative vertical gauge was removed.
+- **Matches tag**: while a filter or skill pin is active, matching work sheets show an accent-outlined "Matches · …" status label.
+- **Sheet titles** use `.sheet-title` (wdth 100, clamp 2.25–3.75rem) so long project names fit a 2/5 column.
+- **Email** uses `.email-display` (clamp 1.375–5rem) and breaks only after the local part.
+- **Portrait** is a background-free cutout (`public/praneeth-cutout.webp`) on `ink-raised`; origin recorded in its `.json` sidecar.
+- **Icons**: one drawn arrow (`components/ui/Arrow.tsx`, 1.5px stroke) replaces Unicode arrows.
+- **Touch targets** ≥ 44px everywhere; `scroll-padding-top: 4.5rem` keeps focus clear of the fixed nav; scrollbar themed; numerals tabular in labels and readouts.
+- **Availability** line in Contact: "Open to full-time roles and freelance projects." (confirmed by Praneeth).
+

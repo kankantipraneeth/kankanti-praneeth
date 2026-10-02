@@ -87,7 +87,7 @@ All GSAP code runs inside `useGSAP()` (from `@gsap/react`) with a `scope` ref, i
 
 ### 4.3 About
 
-- The two summary paragraphs: `SplitText` `type: "words"`. Words scrub from `opacity 0.25 → 1` as the section crosses the viewport (`scrollTrigger: { trigger, start: "top 75%", end: "bottom 55%", scrub: true }`, `stagger` spread over the timeline, `ease: "none"`). Words stay readable at 0.25, so nothing is ever unreadable.
+- The two summary paragraphs: `SplitText` `type: "words"`. Words scrub from `opacity 0.75 → 1` (Phase 8: the AA-safe `DIM.text` floor, so text paused mid-scroll stays readable) as the section crosses the viewport (`scrollTrigger: { trigger, start: "top 75%", end: "bottom 55%", scrub: true }`, `stagger` spread over the timeline, `ease: "none"`). Words never drop below AA contrast.
 - Portrait cell: the image goes `scale 1.06 → 1` and `autoAlpha 0 → 1`, 0.8s, `specimen-out`, once on enter (`start: "top 80%"`, `once: true`).
 - Features: `SplitText`, `ScrollTrigger` scrub, `once`.
 
@@ -197,3 +197,10 @@ All motion setup lives in the `motion: "(prefers-reduced-motion: no-preference)"
 | Magnetic buttons | `gsap.quickTo` on `x` / `y` |
 | Smooth scroll | Lenis + `gsap.ticker` + `ScrollTrigger.update` |
 | Case-study morph | View Transitions API (CSS), not GSAP |
+
+## 9. Phase 8 notes
+
+- Group reveals that contain links or buttons (`Reveal`, the skills grid, mobile work sheets) animate **opacity only**, never `autoAlpha`: `visibility: hidden` removes controls from the Tab order. Any `focusin` inside a group completes its reveal at once.
+- Work screenshot drift is `scale 1.06` with `xPercent -2.5 → 2.5` on the pinned timeline, so the image edges never enter the frame.
+- The pinned track's distance is measured to the last sheet's right edge plus the track's end padding.
+

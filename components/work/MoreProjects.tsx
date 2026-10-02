@@ -2,6 +2,7 @@ import Link from "next/link";
 import { projects } from "@/content/site";
 import { Reveal } from "@/components/motion/Reveal";
 import { statusMarks } from "@/lib/work";
+import { Arrow } from "@/components/ui/Arrow";
 
 export function MoreProjects() {
   const more = projects.filter((project) => !project.featured).sort((a, b) => a.order - b.order);
@@ -20,7 +21,9 @@ export function MoreProjects() {
                   <span className="instance-display text-h2 group-hover:text-accent">{project.title}</span>
                   <span className="text-small text-muted">{project.subtitle}</span>
                   <span className="label text-muted">
-                    {statusMarks(project).join(" · ")} <span aria-hidden="true" className="arrow">→</span>
+                    {statusMarks(project).join(" · ")} <span aria-hidden="true" className="arrow">
+                      <Arrow />
+                    </span>
                   </span>
                 </Link>
               </li>

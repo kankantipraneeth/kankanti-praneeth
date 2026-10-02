@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { Arrow } from "@/components/ui/Arrow";
 
 type ButtonProps = {
   href: string;
@@ -11,7 +12,7 @@ type ButtonProps = {
 };
 
 const VARIANTS = {
-  primary: "bg-accent px-6 text-on-accent",
+  primary: "bg-accent px-6 text-on-accent hover:bg-paper",
   secondary: "border border-paper px-6 text-paper hover:bg-ink-raised",
   link: "text-paper underline decoration-rule underline-offset-[6px] hover:decoration-accent",
 } as const;
@@ -20,7 +21,7 @@ export function Button({ href, children, variant = "primary", download, external
   const classes = `group inline-flex min-h-12 items-center gap-3 text-small font-semibold ${VARIANTS[variant]} ${className}`;
   const arrow = (
     <span aria-hidden="true" className="arrow">
-      {download ? "↓" : external ? "↗" : "→"}
+      <Arrow direction={download ? "down" : external ? "up-right" : "right"} />
     </span>
   );
   if (download || external) {

@@ -9,7 +9,7 @@ export function Hero() {
     <section aria-labelledby="hero-name" className="border-b border-rule">
       <div className="mx-auto grid max-w-page grid-cols-4 gap-x-gutter px-margin pb-16 pt-28 lg:grid-cols-12 lg:items-center lg:pb-20 lg:pt-36">
         <div className="col-span-4 lg:col-span-5">
-          <h1 id="hero-name" data-hero-name className="instance-display text-display-1">
+          <h1 id="hero-name" data-hero-name translate="no" className="instance-display text-display-1">
             Kankanti
             <br />
             Praneeth
@@ -18,15 +18,10 @@ export function Hero() {
             {profile.role} · {profile.location.split(",")[0]}
           </p>
           <RoleLine className="mt-8 max-w-[34ch] text-lead" />
-          <ul aria-label="Proof" className="mt-6 flex max-w-[44ch] flex-wrap gap-x-3 gap-y-1 text-small text-muted">
+          <ul aria-label="Proof" className="mt-6 flex max-w-[48ch] flex-wrap gap-x-5 gap-y-1 text-small text-muted">
             {heroProof.map((claim, index) => (
-              <li key={claim} className="flex items-baseline gap-3">
-                {index > 0 ? (
-                  <span aria-hidden="true" className="text-rule">
-                    /
-                  </span>
-                ) : null}
-                <span className={index === 0 ? "font-semibold text-paper" : undefined}>{claim}</span>
+              <li key={claim} className={index === 0 ? "font-semibold text-paper" : undefined}>
+                {claim}
               </li>
             ))}
           </ul>

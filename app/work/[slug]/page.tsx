@@ -7,10 +7,10 @@ import { getProject, isTodo, projects } from "@/content/site";
 import { CaseReveal } from "@/components/case/CaseReveal";
 import { CaseSection } from "@/components/case/CaseSection";
 import { Button } from "@/components/ui/Button";
-import { Readout } from "@/components/ui/Readout";
 import { FlowPanel } from "@/components/work/FlowPanel";
 import { ScoreReadout } from "@/components/work/ScoreReadout";
 import { nextProject, projectLinks, statusMarks } from "@/lib/work";
+import { Arrow } from "@/components/ui/Arrow";
 
 export const dynamicParams = false;
 
@@ -42,8 +42,8 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   return (
     <CaseReveal>
       <article className="mx-auto max-w-page px-margin pb-section pt-32">
-        <Link href="/#work" className="label text-muted hover:text-accent">
-          ← All work
+        <Link href="/#work" className="label inline-flex min-h-11 items-center gap-2 text-muted hover:text-accent">
+          <Arrow direction="left" /> All work
         </Link>
         <h1 className="instance-display mt-10 text-display-1">{project.title}</h1>
         <p className="mt-4 text-lead text-muted">{project.subtitle}</p>
@@ -90,12 +90,18 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
             </ul>
           </CaseSection>
           <CaseSection title="Stack">
-            <Readout label="Stack">{project.stack.join(" · ")}</Readout>
+            <ul className="flex flex-wrap gap-2">
+              {project.stack.map((item) => (
+                <li key={item} className="border border-rule px-3 py-1 text-small">
+                  {item}
+                </li>
+              ))}
+            </ul>
           </CaseSection>
           <CaseSection title="Results">
             <ul className="flex flex-col gap-4">
               {results.map((item) => (
-                <li key={item} className="border-l border-accent pl-4">
+                <li key={item} className="border-l border-accent pl-4 text-lead">
                   {item}
                 </li>
               ))}
@@ -122,8 +128,11 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
         <nav aria-label="Next project" className="mt-section border-t border-rule pt-10">
           <p className="label text-muted">Next project</p>
-          <Link href={`/work/${next.slug}`} className="group instance-display mt-4 inline-flex items-baseline gap-4 text-display-2 hover:text-accent">
-            {next.title} <span aria-hidden="true" className="arrow">→</span>
+          <Link href={`/work/${next.slug}`} className="group instance-display mt-4 inline-flex min-h-11 items-baseline gap-4 text-display-2 hover:text-accent">
+            {next.title}{" "}
+            <span aria-hidden="true" className="arrow">
+              <Arrow />
+            </span>
           </Link>
         </nav>
       </article>

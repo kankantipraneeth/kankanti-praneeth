@@ -9,6 +9,7 @@ import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { useSpecimen } from "@/components/specimen/SpecimenProvider";
 import { projectsUsingSkill } from "@/lib/skills";
 import { DIM } from "@/lib/specimen";
+import { Arrow } from "@/components/ui/Arrow";
 
 export function GlyphTable() {
   const { pinnedSkill, setPinnedSkill } = useSpecimen();
@@ -21,7 +22,12 @@ export function GlyphTable() {
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
         // Reveal animates the <li> wrappers; dimming animates the buttons inside, so the two never share a property.
-        gsap.from("[data-cell-wrap]", { autoAlpha: 0, duration: 0.4, ease: "specimen-out", stagger: { each: 0.02, grid: "auto", from: "start" }, scrollTrigger: { trigger: root.current, start: "top 80%", once: true } });
+        // Opacity only so every cell stays keyboard-focusable; focusing any cell finishes the reveal.
+        const tween = gsap.from("[data-cell-wrap]", { opacity: 0, duration: 0.4, ease: "specimen-out", stagger: { each: 0.02, grid: "auto", from: "start" }, scrollTrigger: { trigger: root.current, start: "top 80%", once: true } });
+        const container = root.current;
+        const finish = () => tween.progress(1);
+        container?.addEventListener("focusin", finish);
+        return () => container?.removeEventListener("focusin", finish);
       });
     },
     { scope: root },
@@ -67,7 +73,7 @@ export function GlyphTable() {
               <a href="#work" onClick={seeWork} className="group ml-4 inline-flex min-h-11 items-center gap-2 font-semibold text-accent">
                 See them in Selected work
                 <span aria-hidden="true" className="arrow">
-                  ↑
+                  <Arrow direction="up" />
                 </span>
               </a>
             ) : null}

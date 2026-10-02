@@ -13,16 +13,22 @@ export function Reveal({ children, className, y = 12, stagger = 0.05 }: RevealPr
     () => {
       const mm = gsap.matchMedia();
       mm.add(MQ.motion, () => {
-        const items = gsap.utils.toArray<HTMLElement>("[data-reveal]", ref.current);
-        if (items.length === 0) return;
-        gsap.from(items, {
-          autoAlpha: 0,
+        const container = ref.current;
+        const items = gsap.utils.toArray<HTMLElement>("[data-reveal]", container);
+        if (!container || items.length === 0) return;
+        // Opacity only (not autoAlpha): hidden-by-visibility items can't take keyboard focus, so a Tab past them would skip
+        // their links. Focus anywhere inside finishes the reveal at once, so a focused control is never invisible.
+        const tween = gsap.from(items, {
+          opacity: 0,
           y,
           duration: 0.4,
           ease: "specimen-out",
           stagger: Math.min(stagger, 0.6 / items.length),
-          scrollTrigger: { trigger: ref.current, start: "top 85%", once: true },
+          scrollTrigger: { trigger: container, start: "top 85%", once: true },
         });
+        const finish = () => tween.progress(1);
+        container.addEventListener("focusin", finish);
+        return () => container.removeEventListener("focusin", finish);
       });
     },
     { scope: ref },

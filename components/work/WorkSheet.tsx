@@ -19,10 +19,10 @@ export function WorkSheet({ project, index, total, match = null }: WorkSheetProp
   const titleId = `work-${project.slug}-title`;
   return (
     <article data-sheet data-slug={project.slug} aria-labelledby={titleId} className="flex w-full shrink-0 flex-col gap-8 border-t border-rule py-12 lg:flex-row lg:gap-gutter group-data-[track=horizontal]/work:w-[min(78vw,72rem)] group-data-[track=horizontal]/work:border-l group-data-[track=horizontal]/work:border-t-0 group-data-[track=horizontal]/work:px-gutter group-data-[track=horizontal]/work:py-0">
-      <div className="overflow-hidden lg:w-3/5">
+      <div className={`overflow-hidden lg:w-3/5 ${project.image ? "border border-rule" : ""}`}>
         {project.image ? (
           <ViewTransition name={`work-${project.slug}`}>
-            <Image data-parallax src={project.image.src} alt={project.image.alt} width={project.image.width} height={project.image.height} sizes="(min-width: 1024px) 45vw, 100vw" className="h-auto w-full border border-rule" />
+            <Image data-parallax src={project.image.src} alt={project.image.alt} width={project.image.width} height={project.image.height} sizes="(min-width: 1024px) 45vw, 100vw" className="h-auto w-full" />
           </ViewTransition>
         ) : (
           <FlowPanel steps={project.flow ?? []} />

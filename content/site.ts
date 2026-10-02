@@ -131,7 +131,7 @@ export const profile: Profile = {
 };
 
 export const summary: [string, string] = [
-  "I'm a full-stack developer who builds production websites and AI automations. I've delivered client projects end to end, from gathering requirements and building with Next.js and TypeScript to CMS and CRM integration, SEO and deployment.",
+  "I’m a full-stack developer who builds production websites and AI automations. I’ve delivered client projects end to end, from gathering requirements and building with Next.js and TypeScript to CMS and CRM integration, SEO and deployment.",
   "On the AI side I work with Python, LangChain, LLMs, MCP and n8n to build multi-agent systems and workflow automation, backed by an AI Engineering internship at Viswam.AI. I studied Computer Science (B.Tech, 2022–2026) in Hyderabad.",
 ];
 
@@ -156,7 +156,7 @@ export const experience: Experience[] = [
     end: "2025-06",
     // Rewritten from the resume bullets only. No metrics exist for this work, so none are claimed.
     bullets: [
-      "Built Python workflows that automate data validation, cleaning and preprocessing, giving the team's AI automation pipelines clean, consistent input data.",
+      "Built Python workflows that automate data validation, cleaning and preprocessing, giving the team’s AI automation pipelines clean, consistent input data.",
       "Worked with the team to develop and improve those AI automation pipelines and design AI-based solutions built to scale.",
       "Documented the workflows and supported deployment preparation, so the pipelines could be handed over and deployed.",
     ],
@@ -312,7 +312,7 @@ export const projects: Project[] = [
     githubUrl: null,
     // Real screenshots from June 2024 (browser chrome cropped). The task/reminder screens were not captured.
     gallery: [
-      { src: "/work/sturequire/home.webp", alt: "StuRequire home page with the student portal's feature list" },
+      { src: "/work/sturequire/home.webp", alt: "StuRequire home page with the student portal’s feature list" },
       { src: "/work/sturequire/login.webp", alt: "StuRequire sign-in page with email, password and Google sign-in" },
       { src: "/work/sturequire/register.webp", alt: "StuRequire registration form with year, branch and section fields" },
     ],
@@ -321,7 +321,7 @@ export const projects: Project[] = [
     track: "web",
     deployment: "local",
     repo: "none",
-    image: { src: "/work/sturequire/home.webp", width: 1266, height: 617, alt: "StuRequire home page with the student portal's feature list" },
+    image: { src: "/work/sturequire/home.webp", width: 1266, height: 617, alt: "StuRequire home page with the student portal’s feature list" },
   },
 ];
 

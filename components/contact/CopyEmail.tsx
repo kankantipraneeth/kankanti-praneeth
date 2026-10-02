@@ -40,7 +40,7 @@ export function CopyEmail({ email }: { email: string }) {
     <div>
       <button type="button" onClick={copy} className="email-display min-h-11 py-2 text-left hover:text-accent">
         {/* <wbr> lets a narrow screen break after the local part, never mid-word. */}
-        <span ref={textRef}>
+        <span ref={textRef} translate="no">
           {email.split("@")[0]}
           <wbr />@{email.split("@")[1]}
         </span>

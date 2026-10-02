@@ -61,6 +61,25 @@
   html {
     color-scheme: dark;
     background: var(--color-ink);
+    scrollbar-color: var(--color-rule) var(--color-ink);
+    /* Keyboard focus and in-page jumps scroll clear of the 72px fixed nav. */
+    scroll-padding-top: 4.5rem;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  a,
+  button,
+  input,
+  label {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .font-mono,
+  .label {
+    font-variant-numeric: tabular-nums;
   }
   body {
     background: var(--color-ink);

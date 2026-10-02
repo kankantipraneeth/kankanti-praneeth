@@ -27,13 +27,20 @@ export function SelectedWork() {
         const sheets = gsap.utils.toArray<HTMLElement>("[data-sheet]");
         if (!motion) return;
         if (!desktop) {
-          gsap.set(sheets, { autoAlpha: 0, y: 24 });
+          // Opacity only so the sheets' links stay keyboard-focusable; focusing inside a sheet shows it at once.
+          gsap.set(sheets, { opacity: 0, y: 24 });
           ScrollTrigger.batch(sheets, {
             start: "top 85%",
             once: true,
-            onEnter: (batch) => gsap.to(batch, { autoAlpha: 1, y: 0, duration: 0.4, ease: "specimen-out", stagger: 0.05, overwrite: true }),
+            onEnter: (batch) => gsap.to(batch, { opacity: 1, y: 0, duration: 0.4, ease: "specimen-out", stagger: 0.05, overwrite: true }),
           });
-          return;
+          const showFocused = (event: FocusEvent) => {
+            const sheet = (event.target as HTMLElement).closest<HTMLElement>("[data-sheet]");
+            if (sheet) gsap.set(sheet, { opacity: 1, y: 0, overwrite: true });
+          };
+          const trackEl = track.current;
+          trackEl?.addEventListener("focusin", showFocused);
+          return () => trackEl?.removeEventListener("focusin", showFocused);
         }
         const trackEl = track.current;
         const sectionEl = section.current;
@@ -64,7 +71,8 @@ export function SelectedWork() {
           },
         });
         tl.to(trackEl, { x: () => -distance(), ease: "none" }, 0);
-        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((image) => tl.fromTo(image, { xPercent: -6 }, { xPercent: 0, ease: "none" }, 0));
+        // A slight zoom gives the drift its own slack, so the screenshot edges (and logos near them) never leave the frame.
+        gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((image) => tl.fromTo(image, { scale: 1.06, xPercent: -2.5 }, { scale: 1.06, xPercent: 2.5, ease: "none" }, 0));
         return () => {
           delete sectionEl.dataset.track;
         };
@@ -104,7 +112,7 @@ export function SelectedWork() {
             Shipped for real clients and real users
           </h2>
         </div>
-        <p className="label text-muted" aria-live="polite">
+        <p className="label text-muted">
           {emphasisLabel}
           <span ref={counter} aria-hidden="true" className="ml-4 hidden group-data-[track=horizontal]/work:inline">
             01 / {String(total).padStart(2, "0")}

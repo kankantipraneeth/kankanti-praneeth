@@ -2,6 +2,7 @@
 
 import { useRef, type ReactNode } from "react";
 import { gsap, MQ, SplitText, useGSAP } from "@/components/motion/gsap-setup";
+import { DIM } from "@/lib/specimen";
 
 /** Scroll-scrubbed word highlight for [data-scrub] paragraphs and a one-time reveal for [data-portrait]. */
 export function AboutMotion({ children, className }: { children: ReactNode; className?: string }) {
@@ -16,7 +17,8 @@ export function AboutMotion({ children, className }: { children: ReactNode; clas
           const split = SplitText.create(paragraphs, { type: "words" });
           gsap.fromTo(
             split.words,
-            { opacity: 0.25 },
+            // Start at the AA-safe floor so text paused mid-scroll stays readable (DIM.text, 4.8:1 for muted, 9.7:1 for paper).
+            { opacity: DIM.text },
             {
               opacity: 1,
               ease: "none",

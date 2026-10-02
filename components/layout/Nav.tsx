@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { profile } from "@/content/site";
 import { gsap, MQ, ScrollTrigger, useGSAP } from "@/components/motion/gsap-setup";
 import { useScrollTo } from "@/components/motion/SmoothScroll";
+import { Arrow } from "@/components/ui/Arrow";
 
 const LINKS = [
   { id: "work", label: "Work" },
@@ -99,10 +100,13 @@ export function Nav() {
             <span className="instance-display text-small">{profile.name}</span>
             <span className="label hidden text-muted sm:block">Full-stack + AI · {profile.location.split(",")[0]}</span>
           </Link>
-          <ul className="hidden items-center gap-8 lg:flex">{links("label hover:text-accent")}</ul>
+          <ul className="hidden items-center gap-8 lg:flex">{links("label inline-flex min-h-11 items-center hover:text-accent")}</ul>
           <div className="flex items-center gap-4">
             <a href={profile.resumeUrl} download className="group label inline-flex min-h-11 items-center gap-2 border border-paper px-3 sm:px-4">
-              Resume <span aria-hidden="true" className="arrow">↓</span>
+              Resume{" "}
+              <span aria-hidden="true" className="arrow">
+                <Arrow direction="down" />
+              </span>
             </a>
             <button ref={toggleRef} type="button" className="label min-h-11 px-2 lg:hidden" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}>
               {open ? "Close" : "Menu"}
@@ -112,10 +116,10 @@ export function Nav() {
       </header>
       {/* Sibling of <header>, not a child: the header's GSAP transform would otherwise become this fixed panel's containing block. */}
       {open ? (
-        <div ref={menuRef} id="mobile-menu" className="fixed inset-0 top-[72px] z-40 overflow-y-auto bg-ink px-margin py-10 lg:hidden">
+        <div ref={menuRef} id="mobile-menu" className="fixed inset-0 top-[72px] z-40 overflow-y-auto overscroll-contain bg-ink px-margin pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-10 lg:hidden">
           <ul className="flex flex-col gap-6">{links("instance-display text-display-2")}</ul>
           <a href={profile.resumeUrl} download className="label mt-12 inline-flex min-h-12 items-center gap-2 bg-accent px-6 text-on-accent">
-            Download resume ↓
+            Download resume <Arrow direction="down" />
           </a>
         </div>
       ) : null}
