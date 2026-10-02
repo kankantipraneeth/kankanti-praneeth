@@ -12,7 +12,7 @@ type WorkSheetProps = { project: Project; index: number; total: number };
 export function WorkSheet({ project, index, total }: WorkSheetProps) {
   const titleId = `work-${project.slug}-title`;
   return (
-    <article data-sheet data-slug={project.slug} aria-labelledby={titleId} className="flex w-full shrink-0 flex-col gap-8 border-t border-rule py-12 lg:w-[min(78vw,72rem)] lg:flex-row lg:gap-gutter lg:border-l lg:border-t-0 lg:px-gutter lg:py-0">
+    <article data-sheet data-slug={project.slug} aria-labelledby={titleId} className="flex w-full shrink-0 flex-col gap-8 border-t border-rule py-12 lg:flex-row lg:gap-gutter group-data-[track=horizontal]/work:w-[min(78vw,72rem)] group-data-[track=horizontal]/work:border-l group-data-[track=horizontal]/work:border-t-0 group-data-[track=horizontal]/work:px-gutter group-data-[track=horizontal]/work:py-0">
       <div className="overflow-hidden lg:w-3/5">
         {project.image ? (
           <ViewTransition name={`work-${project.slug}`}>

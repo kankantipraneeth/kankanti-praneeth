@@ -9,7 +9,8 @@ import { anek, anekTelugu, martian } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  // Set NEXT_PUBLIC_SITE_URL to the custom domain. When unset, Next falls back to the Vercel production URL (or localhost in dev).
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   title: { default: `${profile.name}: Full-stack + AI developer`, template: `%s · ${profile.name}` },
   description: "Full-stack developer in Hyderabad who builds production websites and AI automations. Case studies, resume and contact.",
   openGraph: { type: "website", siteName: profile.name, locale: "en_IN" },

@@ -21,6 +21,8 @@ export function Nav() {
   const scrollTo = useScrollTo();
   const [open, setOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
@@ -48,14 +50,28 @@ export function Nav() {
     { scope: navRef },
   );
 
+  // While the mobile menu is open: focus its first link, make the page behind it inert,
+  // lock scroll, close on Escape (returning focus to the toggle) or when the viewport reaches desktop width.
   useEffect(() => {
     if (!open) return;
-    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false);
-    document.addEventListener("keydown", onKey);
+    const behind = [...document.querySelectorAll<HTMLElement>("#main, body > footer")];
+    behind.forEach((el) => (el.inert = true));
     document.body.style.overflow = "hidden";
+    menuRef.current?.querySelector<HTMLElement>("a")?.focus();
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      toggleRef.current?.focus();
+    };
+    const desktop = window.matchMedia(MQ.desktop);
+    const onDesktop = () => desktop.matches && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    desktop.addEventListener("change", onDesktop);
     return () => {
-      document.removeEventListener("keydown", onKey);
+      behind.forEach((el) => (el.inert = false));
       document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+      desktop.removeEventListener("change", onDesktop);
     };
   }, [open]);
 
@@ -76,30 +92,33 @@ export function Nav() {
     ));
 
   return (
-    <header ref={navRef} data-open={open} onFocus={() => gsap.to(navRef.current, { yPercent: 0, duration: 0.2, overwrite: "auto" })} className="nav fixed inset-x-0 top-0 z-40">
-      <nav aria-label="Main" className="mx-auto flex h-[72px] max-w-page items-center justify-between gap-6 px-margin">
-        <Link href="/" className="flex flex-col leading-tight">
-          <span className="instance-display text-small">{profile.name}</span>
-          <span className="label text-muted">Full-stack + AI · {profile.location.split(",")[0]}</span>
-        </Link>
-        <ul className="hidden items-center gap-8 lg:flex">{links("label hover:text-accent")}</ul>
-        <div className="flex items-center gap-4">
-          <a href={profile.resumeUrl} download className="group label hidden min-h-11 items-center gap-2 border border-paper px-4 sm:inline-flex">
-            Resume <span aria-hidden="true" className="arrow">↓</span>
-          </a>
-          <button type="button" className="label min-h-11 px-2 lg:hidden" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}>
-            {open ? "Close" : "Menu"}
-          </button>
-        </div>
-      </nav>
+    <>
+      <header ref={navRef} data-open={open} onFocus={() => gsap.to(navRef.current, { yPercent: 0, duration: 0.2, overwrite: "auto" })} className="nav fixed inset-x-0 top-0 z-40">
+        <nav aria-label="Main" className="mx-auto flex h-[72px] max-w-page items-center justify-between gap-6 px-margin">
+          <Link href="/" className="flex flex-col leading-tight">
+            <span className="instance-display text-small">{profile.name}</span>
+            <span className="label text-muted">Full-stack + AI · {profile.location.split(",")[0]}</span>
+          </Link>
+          <ul className="hidden items-center gap-8 lg:flex">{links("label hover:text-accent")}</ul>
+          <div className="flex items-center gap-4">
+            <a href={profile.resumeUrl} download className="group label hidden min-h-11 items-center gap-2 border border-paper px-4 sm:inline-flex">
+              Resume <span aria-hidden="true" className="arrow">↓</span>
+            </a>
+            <button ref={toggleRef} type="button" className="label min-h-11 px-2 lg:hidden" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}>
+              {open ? "Close" : "Menu"}
+            </button>
+          </div>
+        </nav>
+      </header>
+      {/* Sibling of <header>, not a child: the header's GSAP transform would otherwise become this fixed panel's containing block. */}
       {open ? (
-        <div id="mobile-menu" className="fixed inset-0 top-[72px] z-40 bg-ink px-margin py-10 lg:hidden">
+        <div ref={menuRef} id="mobile-menu" className="fixed inset-0 top-[72px] z-40 overflow-y-auto bg-ink px-margin py-10 lg:hidden">
           <ul className="flex flex-col gap-6">{links("instance-display text-display-2")}</ul>
           <a href={profile.resumeUrl} download className="label mt-12 inline-flex min-h-12 items-center gap-2 bg-accent px-6 text-on-accent">
             Download resume ↓
           </a>
         </div>
       ) : null}
-    </header>
+    </>
   );
 }

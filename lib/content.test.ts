@@ -1,14 +1,38 @@
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import * as site from "@/content/site";
 
 const { projects, skills, certifications } = site;
 
+const PHONE_DIGITS = "6305538759";
+const digitsOnly = (text: string) => text.replace(/\D/g, "");
+
+/** Every source file the site renders copy from. */
+function sourceFiles(dir: string): string[] {
+  return readdirSync(dir).flatMap((name) => {
+    const path = join(dir, name);
+    if (statSync(path).isDirectory()) return sourceFiles(path);
+    return /\.(ts|tsx|css)$/.test(name) && !name.endsWith(".test.ts") ? [path] : [];
+  });
+}
+
 describe("content integrity", () => {
-  it("never contains the phone number", () => {
+  it("never contains the phone number, in any formatting", () => {
     const text = JSON.stringify(site);
-    expect(text).not.toMatch(/6305\s?538\s?759/);
+    expect(digitsOnly(text)).not.toContain(PHONE_DIGITS);
     expect(text).not.toMatch(/\+91/);
+  });
+
+  it("never hard-codes the phone number in rendered source", () => {
+    for (const file of ["app", "components", "content"].flatMap(sourceFiles)) {
+      expect(digitsOnly(readFileSync(file, "utf8")), file).not.toContain(PHONE_DIGITS);
+    }
+  });
+
+  it("runs these checks before every production build", () => {
+    const { scripts } = JSON.parse(readFileSync("package.json", "utf8")) as { scripts: Record<string, string> };
+    expect(scripts.prebuild ?? "").toContain("vitest run lib/content.test.ts");
   });
 
   it("has no TODO left in project copy", () => {

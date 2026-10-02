@@ -82,7 +82,7 @@ All GSAP code runs inside `useGSAP()` (from `@gsap/react`) with a `scope` ref, i
   - On input, `gsap.quickTo` on a proxy `{wght, wdth}` (0.4s, `specimen-move`) interpolates between `Web (wdth 125, wght 300)` and `AI (wdth 75, wght 800)`. `onUpdate` writes `font-variation-settings` to the glyph and updates the readout text. Feature: `gsap.quickTo`, `gsap.utils.interpolate`, `gsap.utils.snap` (reduced motion).
   - The glyph's box is fixed-size with `contain: strict`, so the axis change never shifts layout.
   - The role line crossfades when the nearest named stop changes: out 0.2s `specimen-in` (`autoAlpha 0`, `y -8`), in 0.4s `specimen-out`. Feature: a short `gsap.timeline`, `overwrite: "auto"`.
-  - Selected Work re-weights: non-matching sheets go to `opacity 0.45` (0.4s, `specimen-out`); no reorder, no Flip.
+  - Selected Work re-weights: in non-matching sheets the screenshot dims to `opacity 0.35` and all text to `0.75` (`DIM` in `lib/specimen.ts`; 0.75 keeps muted labels at WCAG AA, 4.8:1), 0.4s `specimen-out`; no reorder, no Flip.
 - **No idle loop on the glyph.** It only moves when the visitor moves the axis.
 
 ### 4.3 About
@@ -96,6 +96,7 @@ All GSAP code runs inside `useGSAP()` (from `@gsap/react`) with a `scope` ref, i
 - **Desktop ≥1024px:** pinned horizontal track. `gsap.to(track, { x: () => -(track.scrollWidth - window.innerWidth + margin), ease: "none", scrollTrigger: { trigger: section, pin: true, scrub: true, end: () => "+=" + distance, invalidateOnRefresh: true, anticipatePin: 1 } })`.
   - Each sheet's screenshot drifts `xPercent -6 → 0` on the same scrubbed timeline as the track (no extra triggers; text never parallaxes).
   - The progress readout `01 / 04` updates in `onUpdate` (text swap, no tween).
+- The horizontal row layout is applied only while the desktop-and-motion branch is active (`data-track="horizontal"` on the section, removed on revert). Without JS, under reduced motion and below 1024px the sheets are a vertical stack, so every project is reachable.
 - **Below 1024px:** no pin. Sheets stack vertically; each reveals once with `ScrollTrigger.batch` (`autoAlpha 0 → 1`, `y 24 → 0`, 0.4s, stagger 0.05).
 - Features: `ScrollTrigger` pin + scrub, `ScrollTrigger.batch`, `matchMedia` (pin only in the `desktop && motion` branch).
 
@@ -116,7 +117,7 @@ All GSAP code runs inside `useGSAP()` (from `@gsap/react`) with a `scope` ref, i
 ### 4.7 Skills (glyph table)
 
 - Cells reveal once: `ScrollTrigger.batch` → `autoAlpha 0 → 1`, stagger `{ each: 0.02, grid: "auto", from: "start" }`, capped at 0.6s.
-- **Pinning a skill** (click or Enter): the other cells go to `opacity 0.35` (0.2s). The pinned cell's highlight is a pseudo-element overlay fading in (opacity, not background-color). The "Used in: …" readout crossfades in (0.2s). Unpin reverses. Matching Selected Work sheets get the same `0.45` dim as the Role axis (shared helper).
+- **Pinning a skill** (click or Enter): the other cells go to `opacity 0.75` (0.2s; never lower, so their text stays at WCAG AA). The pinned cell's highlight is a pseudo-element overlay fading in (opacity, not background-color). The "Used in: …" readout crossfades in (0.2s). Unpin reverses. Non-matching Selected Work sheets get the same dim as the Role axis (shared `DIM` values).
 - Features: `ScrollTrigger.batch`, simple `gsap.to` with `overwrite: "auto"`.
 
 ### 4.8 Certifications + education

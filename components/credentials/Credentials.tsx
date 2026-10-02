@@ -24,7 +24,7 @@ export function Credentials() {
                     <span className="sr-only"> {cert.name} (opens in a new tab)</span>
                   </a>
                 ) : (
-                  <span className="font-mono text-readout text-muted">ID {cert.credentialId}</span>
+                  <span className="font-mono text-readout break-all text-muted">ID {cert.credentialId}</span>
                 )}
               </li>
             ))}

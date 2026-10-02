@@ -5,7 +5,7 @@ import { featuredProjects, getProject, skills } from "@/content/site";
 import { gsap, MQ, ScrollTrigger, useGSAP } from "@/components/motion/gsap-setup";
 import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { useSpecimen } from "@/components/specimen/SpecimenProvider";
-import { nearestStop, STOP_LABELS } from "@/lib/specimen";
+import { DIM, nearestStop, STOP_LABELS } from "@/lib/specimen";
 import { isEmphasized } from "@/lib/work";
 import { WorkSheet } from "./WorkSheet";
 
@@ -36,7 +36,11 @@ export function SelectedWork() {
           return;
         }
         const trackEl = track.current;
-        if (!trackEl) return;
+        const sectionEl = section.current;
+        if (!trackEl || !sectionEl) return;
+        // The horizontal layout exists only while this branch is active. Without JS, under reduced motion and below
+        // 1024px the sheets stay a readable vertical stack. Set before measuring so scrollWidth sees the row layout.
+        sectionEl.dataset.track = "horizontal";
         const distance = () => Math.max(0, trackEl.scrollWidth - window.innerWidth);
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -54,6 +58,9 @@ export function SelectedWork() {
         });
         tl.to(trackEl, { x: () => -distance(), ease: "none" }, 0);
         gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((image) => tl.fromTo(image, { xPercent: -6 }, { xPercent: 0, ease: "none" }, 0));
+        return () => {
+          delete sectionEl.dataset.track;
+        };
       });
     },
     { scope: section },
@@ -68,7 +75,11 @@ export function SelectedWork() {
         const on = isEmphasized(project, stop, pinnedSkill, skills);
         sheet.dataset.emphasis = on ? "on" : "off";
         // Dim the sheet's columns, not the sheet itself: the mobile reveal animates the sheet's opacity.
-        gsap.to(Array.from(sheet.children), { opacity: on ? 1 : 0.45, duration: reduced ? 0 : 0.4, ease: "specimen-out", overwrite: "auto" });
+        // Screenshots dim further than text so de-emphasised copy stays at WCAG AA contrast.
+        const [visual, text] = Array.from(sheet.children) as HTMLElement[];
+        const settings = { duration: reduced ? 0 : 0.4, ease: "specimen-out", overwrite: "auto" } as const;
+        if (visual) gsap.to(visual, { ...settings, opacity: on ? 1 : visual.querySelector("img") ? DIM.image : DIM.text });
+        if (text) gsap.to(text, { ...settings, opacity: on ? 1 : DIM.text });
       });
     },
     { dependencies: [stop, pinnedSkill, reduced], scope: section },
@@ -77,8 +88,8 @@ export function SelectedWork() {
   const emphasisLabel = pinnedSkill ? `Pinned: ${pinnedSkill}` : stop === "fullstack" ? "All work" : `${STOP_LABELS[stop]} work highlighted`;
 
   return (
-    <section ref={section} id="work" aria-labelledby="work-title" className="overflow-hidden border-b border-rule lg:flex lg:h-svh lg:flex-col">
-      <div className="mx-auto flex w-full max-w-page flex-wrap items-baseline justify-between gap-4 px-margin pb-10 pt-section lg:pb-8 lg:pt-28">
+    <section ref={section} id="work" aria-labelledby="work-title" className="group/work relative overflow-hidden border-b border-rule data-[track=horizontal]:flex data-[track=horizontal]:h-svh data-[track=horizontal]:flex-col">
+      <div className="mx-auto flex w-full max-w-page flex-wrap items-baseline justify-between gap-4 px-margin pb-10 pt-section group-data-[track=horizontal]/work:pb-8 group-data-[track=horizontal]/work:pt-28">
         <div>
           <p className="label text-muted">02 · Selected work</p>
           <h2 id="work-title" className="mt-4 text-h2">
@@ -87,12 +98,12 @@ export function SelectedWork() {
         </div>
         <p className="label text-muted" aria-live="polite">
           {emphasisLabel}
-          <span ref={counter} aria-hidden="true" className="ml-4 hidden lg:inline">
+          <span ref={counter} aria-hidden="true" className="ml-4 hidden group-data-[track=horizontal]/work:inline">
             01 / {String(total).padStart(2, "0")}
           </span>
         </p>
       </div>
-      <div ref={track} className="flex flex-col px-margin lg:min-h-0 lg:flex-1 lg:flex-row lg:items-center lg:pb-16">
+      <div ref={track} className="flex flex-col px-margin group-data-[track=horizontal]/work:min-h-0 group-data-[track=horizontal]/work:flex-1 group-data-[track=horizontal]/work:flex-row group-data-[track=horizontal]/work:items-center group-data-[track=horizontal]/work:pb-16">
         {featuredProjects.map((project, index) => (
           <WorkSheet key={project.slug} project={project} index={index} total={total} />
         ))}

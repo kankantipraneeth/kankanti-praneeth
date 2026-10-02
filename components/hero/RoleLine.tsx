@@ -13,25 +13,31 @@ export function RoleLine({ className = "" }: { className?: string }) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLParagraphElement>(null);
   const [shown, setShown] = useState<RoleStop>(stop);
-  const lastShown = useRef<RoleStop>(stop);
+  // What the paragraph currently says, readable inside timelines without stale closures.
+  const shownRef = useRef<RoleStop>(stop);
+  const timeline = useRef<gsap.core.Timeline | null>(null);
 
-  // Fade the old line out when the stop changes.
+  // One timeline per stop change: fade out, swap the text, fade in. A newer change kills the older timeline
+  // first, so a stale swap can never land after it. Never runs on first render, so the hero paints immediately.
   useGSAP(
     () => {
-      if (reduced || stop === shown) return;
-      gsap.to(ref.current, { autoAlpha: 0, y: -8, duration: 0.2, ease: "specimen-in", overwrite: true, onComplete: () => setShown(stop) });
+      const el = ref.current;
+      if (reduced || !el) return;
+      timeline.current?.kill();
+      if (stop === shownRef.current) {
+        timeline.current = gsap.timeline().to(el, { autoAlpha: 1, y: 0, duration: 0.2, ease: "specimen-out", overwrite: true });
+        return;
+      }
+      timeline.current = gsap
+        .timeline()
+        .to(el, { autoAlpha: 0, y: -8, duration: 0.2, ease: "specimen-in", overwrite: true })
+        .call(() => {
+          shownRef.current = stop;
+          setShown(stop);
+        })
+        .fromTo(el, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "specimen-out", immediateRender: false });
     },
-    { dependencies: [stop, shown, reduced], scope: ref },
-  );
-
-  // Fade the new line in (never on first render, so the hero paints immediately).
-  useGSAP(
-    () => {
-      if (reduced || shown === lastShown.current) return;
-      lastShown.current = shown;
-      gsap.fromTo(ref.current, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.4, ease: "specimen-out", overwrite: true });
-    },
-    { dependencies: [shown, reduced], scope: ref },
+    { dependencies: [stop, reduced], scope: ref },
   );
 
   return (

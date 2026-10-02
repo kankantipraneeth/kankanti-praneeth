@@ -42,3 +42,9 @@ export const snapAxis = (value: number): number => STOP_VALUES[nearestStop(value
 export const formatVariation = ({ wdth, wght }: Instance): string => `"wdth" ${wdth}, "wght" ${wght}`;
 
 export const formatReadout = ({ wdth, wght }: Instance): string => `wght ${Math.round(wght)} · wdth ${Math.round(wdth)}`;
+
+/**
+ * Opacity for de-emphasised items. Text never goes below 0.75: muted labels at 0.75 still reach 4.8:1 on ink (WCAG AA).
+ * Screenshots carry no text that must be read, so they can dim further to keep the emphasis legible.
+ */
+export const DIM = { text: 0.75, image: 0.35 } as const;

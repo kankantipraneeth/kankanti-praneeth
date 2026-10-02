@@ -7,6 +7,7 @@ import { gsap, MQ, useGSAP } from "@/components/motion/gsap-setup";
 import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { useSpecimen } from "@/components/specimen/SpecimenProvider";
 import { projectsUsingSkill } from "@/lib/skills";
+import { DIM } from "@/lib/specimen";
 
 export function GlyphTable() {
   const { pinnedSkill, setPinnedSkill } = useSpecimen();
@@ -29,7 +30,7 @@ export function GlyphTable() {
     () => {
       gsap.utils.toArray<HTMLElement>("[data-cell]").forEach((cell) => {
         const on = pinnedSkill === null || cell.dataset.skill === pinnedSkill;
-        gsap.to(cell, { opacity: on ? 1 : 0.35, duration: reduced ? 0 : 0.2, ease: "specimen-out", overwrite: "auto" });
+        gsap.to(cell, { opacity: on ? 1 : DIM.text, duration: reduced ? 0 : 0.2, ease: "specimen-out", overwrite: "auto" });
       });
     },
     { dependencies: [pinnedSkill, reduced], scope: root },
