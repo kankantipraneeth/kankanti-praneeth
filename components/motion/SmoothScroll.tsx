@@ -37,7 +37,8 @@ export function useScrollTo() {
       const target = document.querySelector<HTMLElement>(hash);
       if (!target) return;
       const lenis = lenisRef?.current;
-      // No offset here: Lenis honours the target's CSS scroll-margin-top (section[id] in globals.css), as does scrollIntoView.
+      // No offset: the fixed-nav offset lives only in html { scroll-padding-top } (globals.css), which native hash jumps,
+      // scrollIntoView and Lenis all honour. Adding scroll-margin or an explicit offset would double it.
       if (lenis) lenis.scrollTo(target, { duration: 0.8, easing: specimenMove });
       else target.scrollIntoView();
       history.replaceState(null, "", hash);
