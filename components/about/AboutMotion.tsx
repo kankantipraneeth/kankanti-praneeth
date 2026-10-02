@@ -14,7 +14,8 @@ export function AboutMotion({ children, className }: { children: ReactNode; clas
       mm.add(MQ.motion, () => {
         const paragraphs = gsap.utils.toArray<HTMLElement>("[data-scrub]");
         if (paragraphs.length > 0) {
-          const split = SplitText.create(paragraphs, { type: "words" });
+          // aria: "none": the default puts aria-label on each <p>, which is not permitted there; the word spans read naturally.
+          const split = SplitText.create(paragraphs, { type: "words", aria: "none" });
           gsap.fromTo(
             split.words,
             // Start at the AA-safe floor so text paused mid-scroll stays readable (DIM.text, 4.8:1 for muted, 9.7:1 for paper).

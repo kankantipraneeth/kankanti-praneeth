@@ -3,12 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
-import { getProject, isTodo, projects } from "@/content/site";
+import { getProject, isTodo, profile, projects } from "@/content/site";
 import { CaseReveal } from "@/components/case/CaseReveal";
 import { CaseSection } from "@/components/case/CaseSection";
 import { Button } from "@/components/ui/Button";
 import { FlowPanel } from "@/components/work/FlowPanel";
 import { ScoreReadout } from "@/components/work/ScoreReadout";
+import { SITE_URL } from "@/lib/site-url";
+import { caseStudyJsonLd, jsonLdScript } from "@/lib/structured-data";
 import { nextProject, projectLinks, statusMarks } from "@/lib/work";
 import { Arrow } from "@/components/ui/Arrow";
 
@@ -41,6 +43,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
 
   return (
     <CaseReveal>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdScript(caseStudyJsonLd(project, profile, SITE_URL)) }} />
       <article className="mx-auto max-w-page px-margin pb-section pt-32">
         <Link href="/#work" className="label inline-flex min-h-11 items-center gap-2 text-muted hover:text-accent">
           <Arrow direction="left" /> All work

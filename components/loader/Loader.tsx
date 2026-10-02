@@ -48,7 +48,7 @@ export function Loader() {
 
   return (
     <div ref={root} aria-hidden="true" className="loader fixed inset-0 z-50 place-items-center bg-ink">
-      <span data-loader-glyph className="font-telugu text-[min(60vw,28rem)] leading-none" style={{ fontVariationSettings: formatVariation({ wght: 100, wdth: 125 }) }}>
+      <span data-loader-glyph className="font-telugu text-[min(34vw,13rem)] leading-none" style={{ fontVariationSettings: formatVariation({ wght: 100, wdth: 125 }) }}>
         ప్ర
       </span>
       <span data-loader-readout className="label absolute bottom-8 left-margin text-muted">

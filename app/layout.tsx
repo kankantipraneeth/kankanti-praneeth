@@ -5,12 +5,13 @@ import { Loader } from "@/components/loader/Loader";
 import { LOADER_SCRIPT } from "@/components/loader/loader-script";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { profile } from "@/content/site";
+import { SITE_URL } from "@/lib/site-url";
 import { anek, anekTelugu, martian } from "./fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  // Set NEXT_PUBLIC_SITE_URL to the custom domain. When unset, Next falls back to the Vercel production URL (or localhost in dev).
-  metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
+  // Custom domain (NEXT_PUBLIC_SITE_URL), else Vercel's production domain, else localhost. See lib/site-url.ts.
+  metadataBase: new URL(SITE_URL),
   title: { default: `${profile.name}: Full-stack + AI developer`, template: `%s · ${profile.name}` },
   description: "Full-stack developer in Hyderabad who builds production websites and AI automations. Case studies, resume and contact.",
   openGraph: { type: "website", siteName: profile.name, locale: "en_IN" },

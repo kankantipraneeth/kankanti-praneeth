@@ -173,4 +173,4 @@ Case studies: `/work/[slug]` for the four featured projects and StuRequire.
 - **Icons**: one drawn arrow (`components/ui/Arrow.tsx`, 1.5px stroke) replaces Unicode arrows.
 - **Touch targets** ≥ 44px everywhere; `scroll-padding-top: 4.5rem` keeps focus clear of the fixed nav; scrollbar themed; numerals tabular in labels and readouts.
 - **Availability** line in Contact: "Open to full-time roles and freelance projects." (confirmed by Praneeth).
-
+- **Fonts (Phase 9):** Anek Telugu ships as a 9 KB subset of just ప్ర (`app/fonts/anek-telugu-pra.woff2`, see `app/fonts/README.md`); Martian Mono is not preloaded. Mobile Lighthouse went from 77–79 to 91–92.
