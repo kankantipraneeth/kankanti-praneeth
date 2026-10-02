@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 type Status = "idle" | "copied" | "manual";
 
 const MESSAGES: Record<Status, string> = {
-  idle: "Click the address to copy it",
+  idle: "Tap or click the address to copy it",
   copied: "Copied ✓",
   manual: "Selected. Press Ctrl+C (⌘+C on Mac) to copy",
 };

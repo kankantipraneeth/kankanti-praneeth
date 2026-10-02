@@ -30,6 +30,20 @@ describe("content integrity", () => {
     }
   });
 
+  it("backs every hero proof claim with project data", () => {
+    const clientSites = projects.filter((p) => p.deployment === "live" && p.repo === "private-client");
+    expect(site.heroProof).toEqual(["2 live client sites", "Sanity CMS + HubSpot CRM", "Lighthouse accessibility 100 on mobile"]);
+    expect(clientSites).toHaveLength(2);
+    for (const p of clientSites) {
+      expect(p.stack, p.slug).toEqual(expect.arrayContaining(["Sanity CMS", "HubSpot"]));
+      expect(p.lighthouse?.mobile.accessibility, p.slug).toBe(100);
+    }
+  });
+
+  it("states availability in Praneeth's confirmed words", () => {
+    expect(site.profile.availability).toBe("Open to full-time roles and freelance projects.");
+  });
+
   it("runs these checks before every production build", () => {
     const { scripts } = JSON.parse(readFileSync("package.json", "utf8")) as { scripts: Record<string, string> };
     expect(scripts.prebuild ?? "").toContain("vitest run lib/content.test.ts");

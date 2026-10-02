@@ -12,11 +12,11 @@ export function AxisControls() {
 
   return (
     <div>
-      <p className="label text-muted">Axis controls</p>
+      <h2 className="label text-muted">Filter my work</h2>
       <div className="mt-6 flex items-baseline justify-between text-small">
-        <label htmlFor="role-axis">Role: Web to AI</label>
+        <label htmlFor="role-axis">Show my work: Web to AI</label>
         <span aria-hidden="true" className="font-mono text-readout text-accent">
-          {STOP_LABELS[stop]}
+          {STOP_LABELS[stop]} work
         </span>
       </div>
       <input
@@ -26,7 +26,7 @@ export function AxisControls() {
         max={100}
         step={reduced ? 50 : 5}
         value={axis}
-        aria-valuetext={STOP_LABELS[stop]}
+        aria-valuetext={`${STOP_LABELS[stop]} work`}
         onChange={(event) => update(Number(event.target.value))}
         className="axis-range mt-4 w-full"
       />
@@ -35,7 +35,7 @@ export function AxisControls() {
         <span>AI</span>
       </div>
       <p id="presets-label" className="label mt-10 text-muted">
-        Presets
+        Jump to
       </p>
       <div role="group" aria-labelledby="presets-label" className="mt-4 grid grid-cols-3 border-l border-t border-rule">
         {STOP_ORDER.map((s) => (

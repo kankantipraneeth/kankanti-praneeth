@@ -1,7 +1,6 @@
-import { profile } from "@/content/site";
+import { heroProof, profile } from "@/content/site";
 import { Button } from "@/components/ui/Button";
 import { AxisControls } from "./AxisControls";
-import { AxisLabel } from "./AxisLabel";
 import { RoleLine } from "./RoleLine";
 import { SpecimenGlyph } from "./SpecimenGlyph";
 
@@ -10,8 +9,7 @@ export function Hero() {
     <section aria-labelledby="hero-name" className="border-b border-rule">
       <div className="mx-auto grid max-w-page grid-cols-4 gap-x-gutter px-margin pb-16 pt-28 lg:min-h-svh lg:grid-cols-12 lg:items-center lg:pb-24 lg:pt-32">
         <div className="col-span-4 lg:col-span-5">
-          <AxisLabel />
-          <h1 id="hero-name" data-hero-name className="instance-display mt-6 text-display-1">
+          <h1 id="hero-name" data-hero-name className="instance-display text-display-1">
             Kankanti
             <br />
             Praneeth
@@ -20,6 +18,18 @@ export function Hero() {
             {profile.role} · {profile.location}
           </p>
           <RoleLine className="mt-8 max-w-[34ch] text-lead" />
+          <ul aria-label="Proof" className="mt-6 flex max-w-[44ch] flex-wrap gap-x-3 gap-y-1 text-small text-muted">
+            {heroProof.map((claim, index) => (
+              <li key={claim} className="flex items-baseline gap-3">
+                {index > 0 ? (
+                  <span aria-hidden="true" className="text-rule">
+                    /
+                  </span>
+                ) : null}
+                <span className={index === 0 ? "font-semibold text-paper" : undefined}>{claim}</span>
+              </li>
+            ))}
+          </ul>
           <div className="mt-10 flex flex-wrap gap-4">
             <Button href={profile.resumeUrl} download>
               Download resume

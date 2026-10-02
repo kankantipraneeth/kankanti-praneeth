@@ -34,17 +34,10 @@ export function SpecimenGlyph() {
 
   return (
     <figure ref={root} className="mx-auto flex w-[min(78vw,36rem)] flex-col gap-4 lg:w-full">
-      <div className="flex items-stretch gap-6">
-        <div className="glyph-box relative aspect-square flex-1">
-          <span ref={glyph} aria-hidden="true" className="absolute inset-0 grid place-items-center font-telugu leading-none" style={{ fontVariationSettings: formatVariation(INSTANCES.fullstack) }}>
-            ప్ర
-          </span>
-        </div>
-        <div aria-hidden="true" className="relative my-[12%] w-px bg-muted">
-          <div className="absolute inset-0" style={{ transform: `translateY(${100 - axis}%)` }}>
-            <span className="absolute left-1/2 top-0 size-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent" />
-          </div>
-        </div>
+      <div className="glyph-box relative aspect-square w-full">
+        <span ref={glyph} aria-hidden="true" className="absolute inset-0 grid place-items-center font-telugu leading-none" style={{ fontVariationSettings: formatVariation(INSTANCES.fullstack) }}>
+          ప్ర
+        </span>
       </div>
       <figcaption className="label flex flex-wrap justify-between gap-2 text-muted">
         <span ref={readout}>{formatReadout(INSTANCES.fullstack)}</span>

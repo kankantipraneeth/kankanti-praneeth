@@ -17,6 +17,8 @@ export type Profile = {
   github: string;
   resumeUrl: string;
   photo: string | Todo;
+  /** Confirmed by Praneeth (Phase 8). */
+  availability: string;
 };
 
 export type Experience = {
@@ -124,12 +126,16 @@ export const profile: Profile = {
   github: "https://github.com/kankantipraneeth",
   resumeUrl: "/resume.pdf",
   photo: "/praneeth.webp",
+  availability: "Open to full-time roles and freelance projects.",
 };
 
 export const summary: [string, string] = [
   "I'm a full-stack developer who builds production websites and AI automations. I've delivered client projects end to end, from gathering requirements and building with Next.js and TypeScript to CMS and CRM integration, SEO and deployment.",
   "On the AI side I work with Python, LangChain, LLMs, MCP and n8n to build multi-agent systems and workflow automation, backed by an AI Engineering internship at Viswam.AI. I studied Computer Science (B.Tech, 2022–2026) in Hyderabad.",
 ];
+
+/** Proof line in the hero. Every claim is checked against `projects` in lib/content.test.ts. */
+export const heroProof = ["2 live client sites", "Sanity CMS + HubSpot CRM", "Lighthouse accessibility 100 on mobile"];
 
 /** Role line under the name, one true statement per stop of the Web ⟷ AI axis. */
 export const roleLines: Record<RoleStop, string> = {
