@@ -126,7 +126,7 @@ All GSAP code runs inside `useGSAP()` (from `@gsap/react`) with a `scope` ref, i
 ### 4.9 Contact + footer
 
 - **Magnetic buttons** (email, LinkedIn, GitHub, Resume): on `pointermove` within the button's box, `gsap.quickTo(el, "x"|"y", { duration: 0.4, ease: "specimen-out" })` follows the pointer at 0.25× offset, max ±8px. On leave, return to 0 over 0.8s. Only when `(hover: hover) and (pointer: fine)` and motion is allowed.
-- **Copy email:** click → `navigator.clipboard.writeText`. The readout swaps to `COPIED ✓` (crossfade 0.2s), holds 2s, then swaps back. An `aria-live="polite"` region announces it.
+- **Copy email:** click → `navigator.clipboard.writeText`. The readout text swaps to `Copied ✓` instantly, holds 2s, then swaps back; if the Clipboard API fails, the address is selected and the readout explains how to copy it. An `aria-live="polite"` region announces it.
 - Footer: static.
 
 ### 4.10 Global

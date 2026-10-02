@@ -1,4 +1,6 @@
 import { About } from "@/components/about/About";
+import { Contact } from "@/components/contact/Contact";
+import { Credentials } from "@/components/credentials/Credentials";
 import { Experience } from "@/components/experience/Experience";
 import { Hero } from "@/components/hero/Hero";
 import { Skills } from "@/components/skills/Skills";
@@ -15,6 +17,8 @@ export default function Home() {
       <MoreProjects />
       <Experience />
       <Skills />
+      <Credentials />
+      <Contact />
     </SpecimenProvider>
   );
 }
