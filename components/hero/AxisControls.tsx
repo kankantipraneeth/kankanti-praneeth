@@ -1,14 +1,24 @@
 "use client";
 
+import type { MouseEvent } from "react";
+import { featuredProjects, roleLines, skills } from "@/content/site";
+import { useScrollTo } from "@/components/motion/SmoothScroll";
 import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { useSpecimen } from "@/components/specimen/SpecimenProvider";
 import { clampAxis, nearestStop, PRESET_HINTS, snapAxis, STOP_LABELS, STOP_ORDER, STOP_VALUES } from "@/lib/specimen";
+import { isEmphasized } from "@/lib/work";
 
 export function AxisControls() {
   const { axis, setAxis } = useSpecimen();
   const reduced = useReducedMotion();
   const stop = nearestStop(axis);
   const update = (value: number) => setAxis(reduced ? snapAxis(value) : clampAxis(value));
+  const scrollTo = useScrollTo();
+  const matching = featuredProjects.filter((project) => isEmphasized(project, stop, null, skills)).length;
+  const seeWork = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    scrollTo("#work");
+  };
 
   return (
     <div>
@@ -47,10 +57,21 @@ export function AxisControls() {
             className="min-h-16 border-b border-r border-rule p-3 text-left text-small font-semibold aria-pressed:text-accent aria-pressed:outline aria-pressed:outline-1 aria-pressed:-outline-offset-1 aria-pressed:outline-accent"
           >
             {STOP_LABELS[s]}
-            <span className="label mt-1 block font-normal text-muted">{PRESET_HINTS[s]}</span>
+            <span className="label mt-1 block whitespace-nowrap font-normal text-muted">{PRESET_HINTS[s]}</span>
           </button>
         ))}
       </div>
+      {/* On mobile the role line sits far above these controls; mirror it here so the change is visible where you act.
+          aria-hidden: the hero's own role line is the live region that announces it. */}
+      <p aria-hidden="true" className="mt-6 text-small text-muted lg:hidden">
+        {roleLines[stop]}
+      </p>
+      <a href="#work" onClick={seeWork} className="group mt-6 inline-flex min-h-11 items-center gap-2 text-small font-semibold underline decoration-rule underline-offset-[6px] hover:decoration-accent">
+        {stop === "fullstack" ? `See all ${matching} projects` : `See the ${matching} ${STOP_LABELS[stop]} projects`}
+        <span aria-hidden="true" className="arrow">
+          ↓
+        </span>
+      </a>
     </div>
   );
 }

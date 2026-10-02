@@ -5,8 +5,6 @@ import { createContext, useCallback, useContext, useEffect, useRef, type ReactNo
 import { specimenMove } from "@/lib/easing";
 import { gsap, ScrollTrigger } from "./gsap-setup";
 
-export const NAV_OFFSET = 72;
-
 const LenisContext = createContext<RefObject<Lenis | null> | null>(null);
 
 export function SmoothScroll({ children }: { children: ReactNode }) {
@@ -39,7 +37,8 @@ export function useScrollTo() {
       const target = document.querySelector<HTMLElement>(hash);
       if (!target) return;
       const lenis = lenisRef?.current;
-      if (lenis) lenis.scrollTo(target, { offset: -NAV_OFFSET, duration: 0.8, easing: specimenMove });
+      // No offset here: Lenis honours the target's CSS scroll-margin-top (section[id] in globals.css), as does scrollIntoView.
+      if (lenis) lenis.scrollTo(target, { duration: 0.8, easing: specimenMove });
       else target.scrollIntoView();
       history.replaceState(null, "", hash);
       if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");

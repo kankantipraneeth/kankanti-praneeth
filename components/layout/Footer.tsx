@@ -9,7 +9,7 @@ export function Footer() {
         <p className="instance-display text-h3">{profile.name}</p>
         <p className="label text-muted">Built with Next.js · GSAP · Anek & Martian Mono</p>
         <p className="label text-muted">© {YEAR}</p>
-        <a href="#main" className="label hover:text-accent">
+        <a href="#main" className="label inline-flex min-h-11 items-center hover:text-accent">
           Back to top ↑
         </a>
       </div>

@@ -105,6 +105,7 @@
     background: var(--color-accent);
     color: var(--color-on-accent);
     padding: 0.75rem 1rem;
+    min-height: 2.75rem;
   }
   .skip-link:focus-visible {
     transform: none;
@@ -154,6 +155,14 @@
     font-variation-settings: "wdth" 100;
     text-wrap: balance;
   }
+  /* Sized so the full address fits a 375px screen on one line; it may only break after the local part. */
+  .email-display {
+    font-size: clamp(1.375rem, 5.6vw, 5rem);
+    line-height: 1;
+    letter-spacing: -0.015em;
+    font-weight: 700;
+    font-variation-settings: "wdth" 100;
+  }
   .glyph-box {
     contain: strict;
     container-type: size;
@@ -164,7 +173,7 @@
   .axis-range {
     appearance: none;
     background: transparent;
-    height: 1.5rem;
+    height: 2.75rem;
     cursor: pointer;
   }
   .axis-range::-webkit-slider-runnable-track {

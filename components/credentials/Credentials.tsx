@@ -19,7 +19,7 @@ export function Credentials() {
                 <span className="text-small text-muted">{cert.issuer}</span>
                 <span className="font-mono text-readout">{formatIssued(cert.issued)}</span>
                 {cert.verifyUrl ? (
-                  <a href={cert.verifyUrl} target="_blank" rel="noopener noreferrer" className="group label hover:text-accent">
+                  <a href={cert.verifyUrl} target="_blank" rel="noopener noreferrer" className="group label inline-flex min-h-11 items-center gap-1 hover:text-accent">
                     Verify <span aria-hidden="true" className="arrow">↗</span>
                     <span className="sr-only"> {cert.name} (opens in a new tab)</span>
                   </a>

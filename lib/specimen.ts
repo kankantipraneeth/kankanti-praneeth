@@ -6,7 +6,7 @@ export type Instance = { wdth: number; wght: number };
 export const STOP_ORDER: readonly RoleStop[] = ["web", "fullstack", "ai"];
 export const STOP_VALUES: Record<RoleStop, number> = { web: 0, fullstack: 50, ai: 100 };
 export const STOP_LABELS: Record<RoleStop, string> = { web: "Web", fullstack: "Full-stack", ai: "AI" };
-export const PRESET_HINTS: Record<RoleStop, string> = { web: "Sites · CMS · SEO", fullstack: "End to end", ai: "LLM · n8n · Data" };
+export const PRESET_HINTS: Record<RoleStop, string> = { web: "CMS · SEO", fullstack: "End to end", ai: "LLM · n8n" };
 
 export const INSTANCES: Record<RoleStop, Instance> = {
   web: { wdth: 125, wght: 300 },

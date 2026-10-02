@@ -95,13 +95,13 @@ export function Nav() {
     <>
       <header ref={navRef} data-open={open} onFocus={() => gsap.to(navRef.current, { yPercent: 0, duration: 0.2, overwrite: "auto" })} className="nav fixed inset-x-0 top-0 z-40">
         <nav aria-label="Main" className="mx-auto flex h-[72px] max-w-page items-center justify-between gap-6 px-margin">
-          <Link href="/" className="flex flex-col leading-tight">
+          <Link href="/" className="flex min-h-11 flex-col justify-center leading-tight">
             <span className="instance-display text-small">{profile.name}</span>
-            <span className="label text-muted">Full-stack + AI · {profile.location.split(",")[0]}</span>
+            <span className="label hidden text-muted sm:block">Full-stack + AI · {profile.location.split(",")[0]}</span>
           </Link>
           <ul className="hidden items-center gap-8 lg:flex">{links("label hover:text-accent")}</ul>
           <div className="flex items-center gap-4">
-            <a href={profile.resumeUrl} download className="group label hidden min-h-11 items-center gap-2 border border-paper px-4 sm:inline-flex">
+            <a href={profile.resumeUrl} download className="group label inline-flex min-h-11 items-center gap-2 border border-paper px-3 sm:px-4">
               Resume <span aria-hidden="true" className="arrow">↓</span>
             </a>
             <button ref={toggleRef} type="button" className="label min-h-11 px-2 lg:hidden" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}>

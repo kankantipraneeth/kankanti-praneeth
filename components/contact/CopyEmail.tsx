@@ -38,8 +38,12 @@ export function CopyEmail({ email }: { email: string }) {
 
   return (
     <div>
-      <button type="button" onClick={copy} className="instance-display text-left text-display-2 break-all hover:text-accent">
-        <span ref={textRef}>{email}</span>
+      <button type="button" onClick={copy} className="email-display min-h-11 py-2 text-left hover:text-accent">
+        {/* <wbr> lets a narrow screen break after the local part, never mid-word. */}
+        <span ref={textRef}>
+          {email.split("@")[0]}
+          <wbr />@{email.split("@")[1]}
+        </span>
         <span className="sr-only"> (copy email address)</span>
       </button>
       <p aria-live="polite" className="label mt-4 text-muted">
