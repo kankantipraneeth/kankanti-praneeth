@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import * as site from "@/content/site";
 
@@ -38,6 +39,13 @@ describe("content integrity", () => {
 
   it("gives every certificate a way to verify it", () => {
     for (const cert of certifications) expect(cert.verifyUrl !== null || cert.credentialId !== null, cert.name).toBe(true);
+  });
+
+  it("only points at screenshots that exist in public/", () => {
+    for (const project of projects) {
+      if (project.image) expect(existsSync(`public${project.image.src}`), project.image.src).toBe(true);
+      for (const shot of project.gallery) expect(existsSync(`public${shot.src}`), shot.src).toBe(true);
+    }
   });
 
   it("has a flow panel for every project without an image", () => {

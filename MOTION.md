@@ -27,7 +27,7 @@ Registered once with `CustomEase` in the GSAP setup module and used by name ever
 |---|---|---|
 | `specimen-out` | `cubic-bezier(0.16, 1, 0.3, 1)` | Entrances, reveals, landings, magnetic follow |
 | `specimen-in` | `cubic-bezier(0.7, 0, 0.84, 0)` | Exits: loader leaving, role line out, nav hiding |
-| `specimen-move` | `cubic-bezier(0.65, 0, 0.35, 1)` | Things that stay on screen and change: glyph axis morph, Flip reorder, anchor scroll, view-transition morph |
+| `specimen-move` | `cubic-bezier(0.65, 0, 0.35, 1)` | Things that stay on screen and change: glyph axis morph, anchor scroll, view-transition morph |
 
 Scroll-scrubbed tweens use `ease: "none"`, because the scroll position is the easing. Lenis smooths the input. `linear` is never used for discrete events.
 
@@ -37,7 +37,7 @@ Scroll-scrubbed tweens use `ease: "none"`, because the scroll position is the ea
 |---|---|---|
 | `--dur-micro` | 0.2s | Hover, underline, arrow nudge, readout text swap, exits |
 | `--dur-base` | 0.4s | Line reveals, row fades, axis morph per input step, nav show/hide |
-| `--dur-large` | 0.8s | Image reveals, Flip reorder, case-study morph, anchor scroll |
+| `--dur-large` | 0.8s | Image reveals, case-study morph, anchor scroll |
 | `--dur-hero` | 1.2s | Total loader sequence (hard cap 1.5s including exit) |
 
 ### Stagger values
@@ -82,7 +82,7 @@ All GSAP code runs inside `useGSAP()` (from `@gsap/react`) with a `scope` ref, i
   - On input, `gsap.quickTo` on a proxy `{wght, wdth}` (0.4s, `specimen-move`) interpolates between `Web (wdth 125, wght 300)` and `AI (wdth 75, wght 800)`. `onUpdate` writes `font-variation-settings` to the glyph and updates the readout text. Feature: `gsap.quickTo`, `gsap.utils.interpolate`, `gsap.utils.snap` (reduced motion).
   - The glyph's box is fixed-size with `contain: strict`, so the axis change never shifts layout.
   - The role line crossfades when the nearest named stop changes: out 0.2s `specimen-in` (`autoAlpha 0`, `y -8`), in 0.4s `specimen-out`. Feature: a short `gsap.timeline`, `overwrite: "auto"`.
-  - Selected Work re-weights: `Flip.getState(sheets)` → reorder the DOM so matching projects come first → `Flip.from(state, { duration: 0.8, ease: "specimen-move", absolute: false })`. Non-matching sheets go to `opacity 0.45` (0.4s). Afterwards `ScrollTrigger.refresh()`. Flip only animates sheets in view; off-screen it applies instantly. Feature: `Flip` plugin.
+  - Selected Work re-weights: non-matching sheets go to `opacity 0.45` (0.4s, `specimen-out`); no reorder, no Flip.
 - **No idle loop on the glyph.** It only moves when the visitor moves the axis.
 
 ### 4.3 About
@@ -94,10 +94,10 @@ All GSAP code runs inside `useGSAP()` (from `@gsap/react`) with a `scope` ref, i
 ### 4.4 Selected work
 
 - **Desktop ≥1024px:** pinned horizontal track. `gsap.to(track, { x: () => -(track.scrollWidth - window.innerWidth + margin), ease: "none", scrollTrigger: { trigger: section, pin: true, scrub: true, end: () => "+=" + distance, invalidateOnRefresh: true, anticipatePin: 1 } })`.
-  - Each sheet's screenshot drifts `xPercent -6 → 0` using `containerAnimation` (support-tier parallax inside the image frame only; text never parallaxes).
+  - Each sheet's screenshot drifts `xPercent -6 → 0` on the same scrubbed timeline as the track (no extra triggers; text never parallaxes).
   - The progress readout `01 / 04` updates in `onUpdate` (text swap, no tween).
 - **Below 1024px:** no pin. Sheets stack vertically; each reveals once with `ScrollTrigger.batch` (`autoAlpha 0 → 1`, `y 24 → 0`, 0.4s, stagger 0.05).
-- Features: `ScrollTrigger` pin + scrub, `containerAnimation`, `ScrollTrigger.batch`, `matchMedia` (pin only in the `desktop && motion` branch).
+- Features: `ScrollTrigger` pin + scrub, `ScrollTrigger.batch`, `matchMedia` (pin only in the `desktop && motion` branch).
 
 ### 4.5 Case-study transition (`/work/[slug]`)
 
@@ -159,7 +159,7 @@ All motion setup lives in the `motion: "(prefers-reduced-motion: no-preference)"
 | Lenis | Not started; native scroll; anchor links jump |
 | Hero reveal | None; content is there at first paint |
 | Role axis | Snaps between Web / Full-stack / AI (`gsap.utils.snap`); glyph axes set instantly with `gsap.set`; role line swaps without fade |
-| Selected Work | No pin, no horizontal track, no Flip: sheets reorder instantly; dimming is instant |
+| Selected Work | No pin, no horizontal track; dimming is instant |
 | Scrubbed effects (About words, timeline line) | Final state: words fully opaque, line fully drawn |
 | Reveals (batch, once) | None; everything visible |
 | View transition | Disabled via `@media (prefers-reduced-motion: reduce) { ::view-transition-group(*) { animation: none } }` |
@@ -176,7 +176,7 @@ All motion setup lives in the `motion: "(prefers-reduced-motion: no-preference)"
 - **`will-change`:** only on the horizontal track and the glyph, never on many elements.
 - **LCP < 2.5s:** the hero text renders server-side and visible; animation never delays it. Fonts are preloaded through `next/font`, with `adjustFontFallback`.
 - **CLS < 0.1:** the loader is `position: fixed`; the glyph box has fixed dimensions; SplitText uses `autoSplit` so lines re-split after fonts load without a visible jump.
-- **JS:** GSAP core, ScrollTrigger, SplitText, Flip and CustomEase, plus Lenis (≈ 55 KB gzipped together), loaded only from `"use client"` components. Pages stay server components.
+- **JS:** GSAP core, ScrollTrigger, SplitText and CustomEase, plus Lenis (≈ 55 KB gzipped together), loaded only from `"use client"` components. Pages stay server components.
 
 ## 8. GSAP feature map (summary)
 
@@ -188,8 +188,7 @@ All motion setup lives in the `motion: "(prefers-reduced-motion: no-preference)"
 | Loader morph | `gsap.timeline`, proxy tween with `onUpdate` |
 | Name / heading reveals | `SplitText.create({ type: "lines", mask: "lines", autoSplit, onSplit })` |
 | Role axis | `gsap.quickTo`, `gsap.utils.interpolate`, `gsap.utils.snap` |
-| Work reorder | `Flip.getState` / `Flip.from` |
-| Horizontal work track | `ScrollTrigger` `pin` + `scrub`, `containerAnimation`, `invalidateOnRefresh` |
+| Horizontal work track | `ScrollTrigger` `pin` + `scrub`, `invalidateOnRefresh` |
 | Group reveals | `ScrollTrigger.batch`, `stagger` (incl. `grid`) |
 | About word highlight | `SplitText` words + scrubbed `ScrollTrigger` |
 | Timeline line | scrubbed `scaleY` on a timeline with position parameters |

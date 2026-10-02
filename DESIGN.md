@@ -109,7 +109,7 @@ Mobile (375): readout → name → role line → glyph (≈60vw) with a horizont
 - Moving it:
   1. interpolates the hero glyph's `wdth`/`wght` between the `Web` and `AI` instances and updates the readout;
   2. swaps the role line between three true statements taken from `content/site.ts` (web: client sites with CMS/CRM/SEO; full-stack: positioning line; AI: n8n + LLM automation, Auto-EDA, Viswam.AI);
-  3. re-weights **Selected work**: projects tagged for that end move to the front and the rest dim to `--muted` (they are never hidden). Tags: Koshetty, Sunshine, StuRequire = web; WhatsApp bot, Auto-EDA = AI.
+  3. re-weights **Selected work**: projects that don't match the stop dim to 45% opacity (they are never hidden or reordered). Tags: Koshetty, Sunshine, StuRequire = web; WhatsApp bot, Auto-EDA = AI.
 - Keyboard: arrow keys step by 5, Home/End jump to the ends, the preset buttons are focusable. State is announced through `aria-valuetext` ("AI").
 - **Reduced motion:** the slider snaps between the three named instances; no interpolation.
 
