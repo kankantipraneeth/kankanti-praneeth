@@ -180,3 +180,19 @@
     transform: translateX(4px);
   }
 }
+
+::view-transition-group(*) {
+  animation-duration: 0.4s;
+  animation-timing-function: var(--ease-specimen-move);
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.2s;
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
