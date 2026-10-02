@@ -1,0 +1,105 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
+import { profile } from "@/content/site";
+import { gsap, MQ, ScrollTrigger, useGSAP } from "@/components/motion/gsap-setup";
+import { useScrollTo } from "@/components/motion/SmoothScroll";
+
+const LINKS = [
+  { id: "work", label: "Work" },
+  { id: "about", label: "About" },
+  { id: "experience", label: "Experience" },
+  { id: "skills", label: "Skills" },
+  { id: "contact", label: "Contact" },
+] as const;
+
+export function Nav() {
+  const pathname = usePathname();
+  const onHome = pathname === "/";
+  const scrollTo = useScrollTo();
+  const [open, setOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      const nav = navRef.current;
+      if (!nav) return;
+      const mm = gsap.matchMedia();
+      // Two complementary conditions so the handler runs for every visitor; only the hide/show needs motion.
+      mm.add({ motion: MQ.motion, reduce: "(prefers-reduced-motion: reduce)" }, (context) => {
+        const { motion } = context.conditions as { motion: boolean };
+        let hidden = false;
+        ScrollTrigger.create({
+          start: 0,
+          end: "max",
+          onUpdate: (self) => {
+            nav.dataset.raised = String(self.scroll() > 24);
+            if (!motion) return;
+            const hide = self.direction === 1 && self.scroll() > 120 && nav.dataset.open !== "true" && !nav.contains(document.activeElement);
+            if (hide === hidden) return;
+            hidden = hide;
+            gsap.to(nav, { yPercent: hide ? -100 : 0, duration: 0.4, ease: hide ? "specimen-in" : "specimen-out", overwrite: "auto" });
+          },
+        });
+      });
+    },
+    { scope: navRef },
+  );
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false);
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const onLink = (event: MouseEvent<HTMLAnchorElement>, id: string) => {
+    setOpen(false);
+    if (!onHome) return;
+    event.preventDefault();
+    scrollTo(`#${id}`);
+  };
+
+  const links = (className: string) =>
+    LINKS.map((link) => (
+      <li key={link.id}>
+        <Link href={`/#${link.id}`} onClick={(event) => onLink(event, link.id)} className={className}>
+          {link.label}
+        </Link>
+      </li>
+    ));
+
+  return (
+    <header ref={navRef} data-open={open} onFocus={() => gsap.to(navRef.current, { yPercent: 0, duration: 0.2, overwrite: "auto" })} className="nav fixed inset-x-0 top-0 z-40">
+      <nav aria-label="Main" className="mx-auto flex h-[72px] max-w-page items-center justify-between gap-6 px-margin">
+        <Link href="/" className="flex flex-col leading-tight">
+          <span className="instance-display text-small">{profile.name}</span>
+          <span className="label text-muted">Full-stack + AI · {profile.location.split(",")[0]}</span>
+        </Link>
+        <ul className="hidden items-center gap-8 lg:flex">{links("label hover:text-accent")}</ul>
+        <div className="flex items-center gap-4">
+          <a href={profile.resumeUrl} download className="group label hidden min-h-11 items-center gap-2 border border-paper px-4 sm:inline-flex">
+            Resume <span aria-hidden="true" className="arrow">↓</span>
+          </a>
+          <button type="button" className="label min-h-11 px-2 lg:hidden" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((value) => !value)}>
+            {open ? "Close" : "Menu"}
+          </button>
+        </div>
+      </nav>
+      {open ? (
+        <div id="mobile-menu" className="fixed inset-0 top-[72px] z-40 bg-ink px-margin py-10 lg:hidden">
+          <ul className="flex flex-col gap-6">{links("instance-display text-display-2")}</ul>
+          <a href={profile.resumeUrl} download className="label mt-12 inline-flex min-h-12 items-center gap-2 bg-accent px-6 text-on-accent">
+            Download resume ↓
+          </a>
+        </div>
+      ) : null}
+    </header>
+  );
+}

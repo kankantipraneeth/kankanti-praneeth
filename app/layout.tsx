@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { Footer } from "@/components/layout/Footer";
+import { Nav } from "@/components/layout/Nav";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { profile } from "@/content/site";
 import { anek, anekTelugu, martian } from "./fonts";
@@ -22,7 +24,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <a href="#main" className="skip-link label">
             Skip to content
           </a>
+          <Nav />
           <main id="main">{children}</main>
+          <Footer />
         </SmoothScroll>
       </body>
     </html>
