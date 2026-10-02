@@ -100,8 +100,7 @@ export function SelectedWork() {
     <section ref={section} id="work" aria-labelledby="work-title" className="group/work relative overflow-hidden border-b border-rule data-[track=horizontal]:flex data-[track=horizontal]:h-svh data-[track=horizontal]:flex-col">
       <div className="mx-auto flex w-full max-w-page flex-wrap items-baseline justify-between gap-4 px-margin pb-10 pt-section group-data-[track=horizontal]/work:pb-8 group-data-[track=horizontal]/work:pt-28">
         <div>
-          <p className="label text-muted">02 · Selected work</p>
-          <h2 id="work-title" className="mt-4 text-h2">
+          <h2 id="work-title" className="text-h2">
             Shipped for real clients and real users
           </h2>
         </div>

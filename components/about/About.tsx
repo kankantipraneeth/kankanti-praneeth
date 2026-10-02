@@ -7,9 +7,8 @@ export function About() {
     <section id="about" aria-labelledby="about-title" className="border-b border-rule py-section">
       <AboutMotion className="mx-auto grid max-w-page grid-cols-4 gap-x-gutter px-margin lg:grid-cols-12">
         <div className="col-span-4 lg:col-span-7">
-          <p className="label text-muted">01 · About</p>
-          <h2 id="about-title" className="mt-4 text-h2">
-            About me
+          <h2 id="about-title" className="text-h2">
+            From requirements to deployment
           </h2>
           <div className="mt-10 flex flex-col gap-6">
             {summary.map((paragraph) => (
@@ -23,7 +22,7 @@ export function About() {
           </p>
         </div>
         <figure className="col-span-4 mt-14 border border-rule lg:col-span-4 lg:col-start-9 lg:mt-0">
-          <div className="overflow-hidden">
+          <div className="overflow-hidden bg-ink-raised">
             <Image data-portrait src={profile.photo} alt={`Portrait of ${profile.name}`} width={1086} height={1448} sizes="(min-width: 1024px) 30vw, 100vw" className="h-auto w-full" />
           </div>
           <figcaption className="label border-t border-rule p-4 text-muted">

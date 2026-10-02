@@ -97,7 +97,7 @@ export function GlyphTable() {
                     className="cell relative flex h-full min-h-24 w-full flex-col justify-between gap-3 p-4 text-left"
                   >
                     <span className="text-h3 font-semibold">{skill.name}</span>
-                    <span className="label text-muted">{skill.usedIn.length === 0 ? "Resume" : `${skill.usedIn.length} project${skill.usedIn.length > 1 ? "s" : ""}`}</span>
+                    <span className="label text-muted">{skill.usedIn.length === 0 ? "On resume" : `${skill.usedIn.length} project${skill.usedIn.length > 1 ? "s" : ""}`}</span>
                   </button>
                 </li>
               ))}

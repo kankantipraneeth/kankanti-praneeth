@@ -45,8 +45,8 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
         <Link href="/#work" className="label text-muted hover:text-accent">
           ← All work
         </Link>
-        <p className="label mt-10 text-muted">Case study · {project.subtitle}</p>
-        <h1 className="instance-display mt-4 text-display-1">{project.title}</h1>
+        <h1 className="instance-display mt-10 text-display-1">{project.title}</h1>
+        <p className="mt-4 text-lead text-muted">{project.subtitle}</p>
         <ul className="mt-8 flex flex-wrap gap-2" aria-label="Status">
           {statusMarks(project).map((mark) => (
             <li key={mark} className="label border border-rule px-2 py-1">

@@ -8,9 +8,8 @@ export function Experience() {
     <section id="experience" aria-labelledby="experience-title" className="border-b border-rule py-section">
       <div className="mx-auto grid max-w-page grid-cols-4 gap-x-gutter px-margin lg:grid-cols-12">
         <div className="col-span-4 lg:col-span-4">
-          <p className="label text-muted">03 · Experience</p>
-          <h2 id="experience-title" className="mt-4 text-h2">
-            Experience
+          <h2 id="experience-title" className="text-h2">
+            AI engineering at Viswam.AI
           </h2>
         </div>
         <TimelineMotion className="relative col-span-4 mt-10 pl-10 lg:col-span-8 lg:mt-0">

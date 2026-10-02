@@ -6,9 +6,8 @@ export function Credentials() {
   return (
     <section id="credentials" aria-labelledby="credentials-title" className="border-b border-rule py-section">
       <div className="mx-auto max-w-page px-margin">
-        <p className="label text-muted">05 · Certifications & education</p>
-        <h2 id="credentials-title" className="mt-4 text-h2">
-          Credentials
+        <h2 id="credentials-title" className="text-h2">
+          Certifications and education
         </h2>
         <Reveal>
           <ul className="mt-12">
@@ -35,7 +34,7 @@ export function Credentials() {
             <div>
               <h3 className="instance-display text-h2">{item.degree}</h3>
               <p className="mt-2 text-lead text-muted">{item.institution}</p>
-              <p className="label mt-4 text-muted">Coursework · {item.coursework.join(" · ")}</p>
+              <p className="mt-4 text-small text-muted">Coursework: {item.coursework.join(", ")}</p>
             </div>
             <div className="flex flex-col gap-1 font-mono text-readout lg:text-right">
               <span>

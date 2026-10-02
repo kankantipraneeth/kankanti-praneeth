@@ -15,7 +15,7 @@ export function Hero() {
             Praneeth
           </h1>
           <p className="label mt-6 text-muted">
-            {profile.role} · {profile.location}
+            {profile.role} · {profile.location.split(",")[0]}
           </p>
           <RoleLine className="mt-8 max-w-[34ch] text-lead" />
           <ul aria-label="Proof" className="mt-6 flex max-w-[44ch] flex-wrap gap-x-3 gap-y-1 text-small text-muted">

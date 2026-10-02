@@ -7,8 +7,7 @@ export function Contact() {
   return (
     <section id="contact" aria-labelledby="contact-title" className="py-section">
       <div className="mx-auto max-w-page px-margin">
-        <p className="label text-muted">06 · Contact</p>
-        <h2 id="contact-title" className="mt-4 max-w-[22ch] text-h2">
+        <h2 id="contact-title" className="max-w-[22ch] text-h2">
           Hiring, or need a website or an automation built?
         </h2>
         <p className="mt-6 text-lead text-muted">{profile.availability}</p>

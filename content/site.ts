@@ -125,7 +125,8 @@ export const profile: Profile = {
   linkedin: "https://www.linkedin.com/in/praneeth-kankanti-148317258",
   github: "https://github.com/kankantipraneeth",
   resumeUrl: "/resume.pdf",
-  photo: "/praneeth.webp",
+  // Background cut to transparency so the portrait sits on the ink surface (origin note: public/praneeth-cutout.webp.json).
+  photo: "/praneeth-cutout.webp",
   availability: "Open to full-time roles and freelance projects.",
 };
 
