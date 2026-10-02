@@ -29,21 +29,34 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
   return <LenisContext.Provider value={lenisRef}>{children}</LenisContext.Provider>;
 }
 
-/** Scrolls to an in-page hash, moves focus there and updates the URL. */
+/** Scrolls to an in-page hash (updating the URL) or an element, and moves focus there. */
 export function useScrollTo() {
   const lenisRef = useContext(LenisContext);
   return useCallback(
-    (hash: string) => {
-      const target = document.querySelector<HTMLElement>(hash);
+    (destination: string | HTMLElement) => {
+      const target = typeof destination === "string" ? document.querySelector<HTMLElement>(destination) : destination;
       if (!target) return;
       const lenis = lenisRef?.current;
       // No offset: the fixed-nav offset lives only in html { scroll-padding-top } (globals.css), which native hash jumps,
       // scrollIntoView and Lenis all honour. Adding scroll-margin or an explicit offset would double it.
       if (lenis) lenis.scrollTo(target, { duration: 0.8, easing: specimenMove });
       else target.scrollIntoView();
-      history.replaceState(null, "", hash);
+      if (typeof destination === "string") history.replaceState(null, "", destination);
       if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
       target.focus({ preventScroll: true });
+    },
+    [lenisRef],
+  );
+}
+
+/** Scrolls to an absolute document position (used to land on a given sheet inside the pinned work track). */
+export function useScrollToY() {
+  const lenisRef = useContext(LenisContext);
+  return useCallback(
+    (y: number) => {
+      const lenis = lenisRef?.current;
+      if (lenis) lenis.scrollTo(y, { duration: 0.8, easing: specimenMove });
+      else window.scrollTo(0, y);
     },
     [lenisRef],
   );

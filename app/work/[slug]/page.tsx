@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
-import { getProject, isTodo, profile, projects } from "@/content/site";
+import { featuredProjects, getProject, isTodo, profile, projects } from "@/content/site";
 import { CaseReveal } from "@/components/case/CaseReveal";
 import { CaseSection } from "@/components/case/CaseSection";
 import { Button } from "@/components/ui/Button";
@@ -37,7 +37,8 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) notFound();
-  const next = nextProject(project.slug, projects);
+  // Chain through featured work only, so a local-only project never comes "next".
+  const next = nextProject(project.slug, featuredProjects);
   const external = projectLinks(project).filter((link) => link.external);
   const results = project.results.filter((result) => !isTodo(result));
 
@@ -128,6 +129,21 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
             </CaseSection>
           ) : null}
         </div>
+
+        <section aria-labelledby="case-contact" className="mt-section border-t border-rule pt-10">
+          <h2 id="case-contact" className="max-w-[22ch] text-h2">
+            Hiring, or need a website or an automation built?
+          </h2>
+          <p className="mt-4 text-lead text-muted">{profile.availability}</p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Button href={`mailto:${profile.email}`} external={false}>
+              Write an email
+            </Button>
+            <Button href={profile.resumeUrl} variant="secondary" download>
+              Download resume
+            </Button>
+          </div>
+        </section>
 
         <nav aria-label="Next project" className="mt-section border-t border-rule pt-10">
           <p className="label text-muted">Next project</p>

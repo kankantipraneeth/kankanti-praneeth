@@ -2,11 +2,11 @@
 
 import type { MouseEvent } from "react";
 import { featuredProjects, roleLines, skills } from "@/content/site";
-import { useScrollTo } from "@/components/motion/SmoothScroll";
 import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { useSpecimen } from "@/components/specimen/SpecimenProvider";
 import { clampAxis, nearestStop, PRESET_HINTS, snapAxis, STOP_LABELS, STOP_ORDER, STOP_VALUES } from "@/lib/specimen";
 import { isEmphasized } from "@/lib/work";
+import { showWork } from "@/components/work/show-work";
 import { Arrow } from "@/components/ui/Arrow";
 
 export function AxisControls() {
@@ -14,11 +14,12 @@ export function AxisControls() {
   const reduced = useReducedMotion();
   const stop = nearestStop(axis);
   const update = (value: number) => setAxis(reduced ? snapAxis(value) : clampAxis(value));
-  const scrollTo = useScrollTo();
-  const matching = featuredProjects.filter((project) => isEmphasized(project, stop, null, skills)).length;
+  const matchingProjects = featuredProjects.filter((project) => isEmphasized(project, stop, null, skills));
+  const matching = matchingProjects.length;
+  // Lands on the first matching sheet (e.g. the AI projects are 03–04), not the top of the section.
   const seeWork = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    scrollTo("#work");
+    showWork((matchingProjects[0] ?? featuredProjects[0]).slug);
   };
 
   return (

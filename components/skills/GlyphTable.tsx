@@ -4,12 +4,12 @@ import Link from "next/link";
 import { useRef, type KeyboardEvent, type MouseEvent } from "react";
 import { projects, skills } from "@/content/site";
 import { gsap, MQ, useGSAP } from "@/components/motion/gsap-setup";
-import { useScrollTo } from "@/components/motion/SmoothScroll";
 import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { useSpecimen } from "@/components/specimen/SpecimenProvider";
 import { projectsUsingSkill } from "@/lib/skills";
 import { DIM } from "@/lib/specimen";
 import { Arrow } from "@/components/ui/Arrow";
+import { showWork } from "@/components/work/show-work";
 
 export function GlyphTable() {
   const { pinnedSkill, setPinnedSkill } = useSpecimen();
@@ -43,10 +43,10 @@ export function GlyphTable() {
     { dependencies: [pinnedSkill, reduced], scope: root },
   );
 
-  const scrollTo = useScrollTo();
+  const firstFeatured = pinnedProjects.find((project) => project.featured);
   const seeWork = (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
-    scrollTo("#work");
+    if (firstFeatured) showWork(firstFeatured.slug);
   };
 
   const onKeyDown = (event: KeyboardEvent) => {

@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { featuredProjects, getProject, skills } from "@/content/site";
 import { gsap, MQ, ScrollTrigger, useGSAP } from "@/components/motion/gsap-setup";
+import { useScrollTo, useScrollToY } from "@/components/motion/SmoothScroll";
 import { useReducedMotion } from "@/components/motion/useReducedMotion";
 import { useSpecimen } from "@/components/specimen/SpecimenProvider";
 import { DIM, nearestStop, STOP_LABELS } from "@/lib/specimen";
 import { isEmphasized } from "@/lib/work";
+import { SHOW_WORK_EVENT } from "./show-work";
 import { WorkSheet } from "./WorkSheet";
 
 export function SelectedWork() {
@@ -17,6 +19,10 @@ export function SelectedWork() {
   const track = useRef<HTMLDivElement>(null);
   const counter = useRef<HTMLSpanElement>(null);
   const total = featuredProjects.length;
+  /** Set while the pinned desktop track exists: maps a sheet to the scroll position that brings it to the start of the track. */
+  const pinnedTargetY = useRef<((sheet: HTMLElement) => number) | null>(null);
+  const scrollTo = useScrollTo();
+  const scrollToY = useScrollToY();
 
   // Layout motion: pinned horizontal track on desktop, one-time reveals on mobile.
   useGSAP(
@@ -73,13 +79,38 @@ export function SelectedWork() {
         tl.to(trackEl, { x: () => -distance(), ease: "none" }, 0);
         // A slight zoom gives the drift its own slack, so the screenshot edges (and logos near them) never leave the frame.
         gsap.utils.toArray<HTMLElement>("[data-parallax]").forEach((image) => tl.fromTo(image, { scale: 1.06, xPercent: -2.5 }, { scale: 1.06, xPercent: 2.5, ease: "none" }, 0));
+        pinnedTargetY.current = (sheet) => {
+          const trigger = tl.scrollTrigger;
+          const span = distance();
+          if (!trigger || span <= 0) return trigger?.start ?? 0;
+          const startPadding = parseFloat(getComputedStyle(trackEl).paddingLeft) || 0;
+          const x = Math.min(span, Math.max(0, sheet.offsetLeft - startPadding));
+          return trigger.start + (x / span) * (trigger.end - trigger.start);
+        };
         return () => {
+          pinnedTargetY.current = null;
           delete sectionEl.dataset.track;
         };
       });
     },
     { scope: section },
   );
+
+  // "Show me this project" requests from the hero filter and the skills grid land on that sheet, not just the section top.
+  useEffect(() => {
+    const onShow = (event: Event) => {
+      const slug = (event as CustomEvent<string>).detail;
+      const sheet = section.current?.querySelector<HTMLElement>(`[data-slug="${slug}"]`);
+      if (!sheet) return;
+      const toPinned = pinnedTargetY.current;
+      if (toPinned) scrollToY(toPinned(sheet));
+      else scrollTo(sheet);
+      if (!sheet.hasAttribute("tabindex")) sheet.setAttribute("tabindex", "-1");
+      sheet.focus({ preventScroll: true });
+    };
+    window.addEventListener(SHOW_WORK_EVENT, onShow);
+    return () => window.removeEventListener(SHOW_WORK_EVENT, onShow);
+  }, [scrollTo, scrollToY]);
 
   // Emphasis: dim sheets that don't match the axis stop or the pinned skill.
   useGSAP(

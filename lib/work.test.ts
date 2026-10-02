@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getProject, projects, skills } from "@/content/site";
+import { featuredProjects, getProject, projects, skills } from "@/content/site";
 import { isEmphasized, nextProject, projectLinks, statusMarks } from "./work";
 
 const p = (slug: string) => {
@@ -39,6 +39,12 @@ describe("honest labels and links", () => {
     ]);
     expect(projectLinks(p("auto-eda-ai")).map((l) => l.label)).toEqual(["Case study", "Live site", "GitHub"]);
     expect(projectLinks(p("sunshine-overseas")).map((l) => l.label)).toEqual(["Case study", "Live site"]);
+  });
+
+  it("chains case studies through featured work only, so local-only projects never come next", () => {
+    expect(nextProject("whatsapp-automation-bot", featuredProjects).slug).toBe("koshetty-jewellers");
+    expect(nextProject("sturequire", featuredProjects).slug).toBe("koshetty-jewellers");
+    expect(featuredProjects.map((p) => p.slug)).not.toContain("sturequire");
   });
 
   it("cycles to the next project by order", () => {

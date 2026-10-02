@@ -329,9 +329,10 @@ export const skills: SkillGroup[] = [
   {
     name: "AI & Agents",
     skills: [
-      { name: "LLMs", usedIn: [] },
+      // Confirmed by Praneeth (Phase 10): the WhatsApp bot sends client queries to an LLM inside an agentic n8n workflow.
+      { name: "LLMs", usedIn: ["whatsapp-automation-bot"] },
       { name: "LangChain", usedIn: [] },
-      { name: "AI Agents", usedIn: [] },
+      { name: "AI Agents", usedIn: ["whatsapp-automation-bot"] },
       { name: "Prompt Engineering", usedIn: [] },
       { name: "MCP", usedIn: ["koshetty-jewellers"] },
       { name: "n8n", usedIn: ["whatsapp-automation-bot"] },
