@@ -67,7 +67,8 @@ export function SelectedWork() {
         if (!project) return;
         const on = isEmphasized(project, stop, pinnedSkill, skills);
         sheet.dataset.emphasis = on ? "on" : "off";
-        gsap.to(sheet, { opacity: on ? 1 : 0.45, duration: reduced ? 0 : 0.4, ease: "specimen-out", overwrite: "auto" });
+        // Dim the sheet's columns, not the sheet itself: the mobile reveal animates the sheet's opacity.
+        gsap.to(Array.from(sheet.children), { opacity: on ? 1 : 0.45, duration: reduced ? 0 : 0.4, ease: "specimen-out", overwrite: "auto" });
       });
     },
     { dependencies: [stop, pinnedSkill, reduced], scope: section },

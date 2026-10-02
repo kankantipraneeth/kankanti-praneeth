@@ -132,6 +132,19 @@
   html[data-loader] body {
     overflow: hidden;
   }
+  .cell::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--color-accent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s var(--ease-specimen-out);
+  }
+  .cell[aria-pressed="true"]::after,
+  .cell:hover::after {
+    opacity: 1;
+  }
   .glyph-box {
     contain: strict;
     container-type: size;
