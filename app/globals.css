@@ -70,6 +70,13 @@
   h3 {
     text-wrap: balance;
   }
+  /* Wide monitors: above 1440px the whole rem-based design scales up in proportion (1rem = 1/90 of the viewport),
+     capped at 24px, so a 1920px screen shows the 1440px composition larger instead of a small island in empty space. */
+  @media (min-width: 1440px) {
+    html {
+      font-size: clamp(16px, 1.1111vw, 24px);
+    }
+  }
   a,
   button,
   input,
@@ -164,6 +171,10 @@
   .cell[aria-pressed="true"]::after,
   .cell:hover::after {
     opacity: 1;
+  }
+  /* Aligns the work track with the centred page container at any width (padding is also the track's end margin). */
+  .track-pad {
+    padding-inline: max(var(--spacing-margin), calc((100% - var(--container-page)) / 2 + var(--spacing-margin)));
   }
   /* Project titles on work sheets: narrower width instance and capped size so long names fit a 2/5 column. */
   .sheet-title {

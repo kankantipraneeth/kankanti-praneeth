@@ -105,7 +105,7 @@ export function SelectedWork() {
   const emphasisLabel = pinnedSkill ? `Pinned: ${pinnedSkill}` : stop === "fullstack" ? "All work" : `${STOP_LABELS[stop]} work highlighted`;
 
   return (
-    <section ref={section} id="work" aria-labelledby="work-title" className="group/work relative overflow-hidden border-b border-rule data-[track=horizontal]:flex data-[track=horizontal]:h-svh data-[track=horizontal]:flex-col">
+    <section ref={section} id="work" aria-labelledby="work-title" className="group/work relative overflow-hidden border-b border-rule data-[track=horizontal]:flex data-[track=horizontal]:h-svh data-[track=horizontal]:flex-col data-[track=horizontal]:justify-center">
       <div className="mx-auto flex w-full max-w-page flex-wrap items-baseline justify-between gap-4 px-margin pb-10 pt-section group-data-[track=horizontal]/work:pb-8 group-data-[track=horizontal]/work:pt-28">
         <div>
           <h2 id="work-title" className="text-h2">
@@ -119,7 +119,7 @@ export function SelectedWork() {
           </span>
         </p>
       </div>
-      <div ref={track} className="flex flex-col px-margin group-data-[track=horizontal]/work:min-h-0 group-data-[track=horizontal]/work:flex-1 group-data-[track=horizontal]/work:flex-row group-data-[track=horizontal]/work:items-center group-data-[track=horizontal]/work:pb-16">
+      <div ref={track} className="track-pad flex flex-col group-data-[track=horizontal]/work:min-h-0 group-data-[track=horizontal]/work:flex-row group-data-[track=horizontal]/work:items-center group-data-[track=horizontal]/work:pb-16">
         {featuredProjects.map((project, index) => (
           <WorkSheet key={project.slug} project={project} index={index} total={total} match={filterActive && isEmphasized(project, stop, pinnedSkill, skills) ? matchLabel : null} />
         ))}

@@ -95,7 +95,7 @@ export function Nav() {
   return (
     <>
       <header ref={navRef} data-open={open} onFocus={() => gsap.to(navRef.current, { yPercent: 0, duration: 0.2, overwrite: "auto" })} className="nav fixed inset-x-0 top-0 z-40">
-        <nav aria-label="Main" className="mx-auto flex h-[72px] max-w-page items-center justify-between gap-6 px-margin">
+        <nav aria-label="Main" className="mx-auto flex h-18 max-w-page items-center justify-between gap-6 px-margin">
           <Link href="/" className="flex min-h-11 flex-col justify-center leading-tight">
             <span className="instance-display text-small">{profile.name}</span>
             <span className="label hidden text-muted sm:block">Full-stack + AI · {profile.location.split(",")[0]}</span>
@@ -116,7 +116,7 @@ export function Nav() {
       </header>
       {/* Sibling of <header>, not a child: the header's GSAP transform would otherwise become this fixed panel's containing block. */}
       {open ? (
-        <div ref={menuRef} id="mobile-menu" className="fixed inset-0 top-[72px] z-40 overflow-y-auto overscroll-contain bg-ink px-margin pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-10 lg:hidden">
+        <div ref={menuRef} id="mobile-menu" className="fixed inset-0 top-18 z-40 overflow-y-auto overscroll-contain bg-ink px-margin pb-[max(2.5rem,env(safe-area-inset-bottom))] pt-10 lg:hidden">
           <ul className="flex flex-col gap-6">{links("instance-display text-display-2")}</ul>
           <a href={profile.resumeUrl} download className="label mt-12 inline-flex min-h-12 items-center gap-2 bg-accent px-6 text-on-accent">
             Download resume <Arrow direction="down" />
