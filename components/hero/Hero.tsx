@@ -7,7 +7,7 @@ import { SpecimenGlyph } from "./SpecimenGlyph";
 export function Hero() {
   return (
     <section aria-labelledby="hero-name" className="border-b border-rule">
-      <div className="mx-auto grid max-w-page grid-cols-4 gap-x-gutter px-margin pb-16 pt-28 lg:min-h-svh lg:grid-cols-12 lg:items-center lg:pb-24 lg:pt-32">
+      <div className="mx-auto grid max-w-page grid-cols-4 gap-x-gutter px-margin pb-16 pt-28 lg:grid-cols-12 lg:items-center lg:pb-20 lg:pt-36">
         <div className="col-span-4 lg:col-span-5">
           <h1 id="hero-name" data-hero-name className="instance-display text-display-1">
             Kankanti

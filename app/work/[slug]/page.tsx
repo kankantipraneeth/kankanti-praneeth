@@ -54,15 +54,6 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
             </li>
           ))}
         </ul>
-        <div className="mt-12">
-          {project.image ? (
-            <ViewTransition name={`work-${project.slug}`}>
-              <Image src={project.image.src} alt={project.image.alt} width={project.image.width} height={project.image.height} sizes="(min-width: 1440px) 1328px, 100vw" loading="eager" fetchPriority="high" className="h-auto w-full border border-rule" />
-            </ViewTransition>
-          ) : (
-            <FlowPanel steps={project.flow ?? []} />
-          )}
-        </div>
         {external.length > 0 ? (
           <div className="mt-8 flex flex-wrap gap-4">
             {external.map((link) => (
@@ -72,15 +63,24 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
             ))}
           </div>
         ) : null}
+        <div className="mt-12">
+          {project.image ? (
+            <ViewTransition name={`work-${project.slug}`}>
+              <Image src={project.image.src} alt={project.image.alt} width={project.image.width} height={project.image.height} sizes="(min-width: 1440px) 1328px, 100vw" loading="eager" fetchPriority="high" className="h-auto w-full border border-rule" />
+            </ViewTransition>
+          ) : (
+            <FlowPanel steps={project.flow ?? []} />
+          )}
+        </div>
 
         <div className="mt-section">
-          <CaseSection number="01" title="Problem">
+          <CaseSection title="Problem">
             <p className="text-lead">{project.problem}</p>
           </CaseSection>
-          <CaseSection number="02" title="My role">
+          <CaseSection title="My role">
             <p className="text-lead">{project.role}</p>
           </CaseSection>
-          <CaseSection number="03" title="What I built">
+          <CaseSection title="What I built">
             <ul className="flex flex-col gap-4">
               {project.built.map((item) => (
                 <li key={item} className="border-l border-rule pl-4">
@@ -89,10 +89,10 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
               ))}
             </ul>
           </CaseSection>
-          <CaseSection number="04" title="Stack">
+          <CaseSection title="Stack">
             <Readout label="Stack">{project.stack.join(" · ")}</Readout>
           </CaseSection>
-          <CaseSection number="05" title="Results">
+          <CaseSection title="Results">
             <ul className="flex flex-col gap-4">
               {results.map((item) => (
                 <li key={item} className="border-l border-accent pl-4">
@@ -107,7 +107,7 @@ export default async function CaseStudyPage({ params }: PageProps<"/work/[slug]"
             ) : null}
           </CaseSection>
           {project.gallery.length > 0 ? (
-            <CaseSection number="06" title="Gallery">
+            <CaseSection title="Gallery">
               <div className="flex flex-col gap-8">
                 {project.gallery.map((shot) => (
                   <figure key={shot.src}>

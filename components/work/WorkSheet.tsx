@@ -26,7 +26,7 @@ export function WorkSheet({ project, index, total }: WorkSheetProps) {
         <p className="label text-muted">
           {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </p>
-        <h3 id={titleId} className="instance-display text-display-2">
+        <h3 id={titleId} className="sheet-title">
           {project.title}
         </h3>
         <p className="text-lead text-muted">{project.subtitle}</p>

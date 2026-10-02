@@ -1,16 +1,14 @@
 import type { ReactNode } from "react";
 
-export function CaseSection({ number, title, children }: { number: string; title: string; children: ReactNode }) {
+/** One case-study section: heading in the left columns, content beside it on desktop, stacked on mobile. */
+export function CaseSection({ title, children }: { title: string; children: ReactNode }) {
   const id = `case-${title.toLowerCase().replace(/[^a-z]+/g, "-")}`;
   return (
-    <section aria-labelledby={id} className="grid grid-cols-4 gap-x-gutter border-t border-rule py-12 lg:grid-cols-12">
-      <p className="label col-span-4 text-muted lg:col-span-3">{number}</p>
-      <div className="col-span-4 mt-4 lg:col-span-8 lg:mt-0">
-        <h2 id={id} data-case-heading className="text-h2">
-          {title}
-        </h2>
-        <div className="mt-6 max-w-[68ch]">{children}</div>
-      </div>
+    <section aria-labelledby={id} className="grid grid-cols-4 gap-x-gutter gap-y-6 border-t border-rule py-12 lg:grid-cols-12">
+      <h2 id={id} data-case-heading className="col-span-4 text-h2">
+        {title}
+      </h2>
+      <div className="col-span-4 max-w-[68ch] lg:col-span-8">{children}</div>
     </section>
   );
 }

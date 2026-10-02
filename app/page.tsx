@@ -12,9 +12,9 @@ export default function Home() {
   return (
     <SpecimenProvider>
       <Hero />
-      <About />
       <SelectedWork />
       <MoreProjects />
+      <About />
       <Experience />
       <Skills />
       <Credentials />

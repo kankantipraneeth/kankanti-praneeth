@@ -145,6 +145,15 @@
   .cell:hover::after {
     opacity: 1;
   }
+  /* Project titles on work sheets: narrower width instance and capped size so long names fit a 2/5 column. */
+  .sheet-title {
+    font-size: clamp(2.25rem, 3.6vw, 3.75rem);
+    line-height: 0.95;
+    letter-spacing: -0.015em;
+    font-weight: 700;
+    font-variation-settings: "wdth" 100;
+    text-wrap: balance;
+  }
   .glyph-box {
     contain: strict;
     container-type: size;

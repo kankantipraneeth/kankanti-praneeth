@@ -13,7 +13,7 @@ export function Credentials() {
         <Reveal>
           <ul className="mt-12">
             {certifications.map((cert) => (
-              <li key={cert.name} data-reveal className="grid grid-cols-1 gap-2 border-t border-rule py-5 lg:grid-cols-[1fr_12rem_16rem_8rem_8rem] lg:items-baseline lg:gap-6">
+              <li key={cert.name} data-reveal className="grid grid-cols-1 gap-2 border-t border-rule py-5 lg:grid-cols-[minmax(0,1fr)_10rem_12rem_7rem_auto] lg:items-baseline lg:gap-6">
                 <span className="text-h3 font-semibold">{cert.name}</span>
                 <span className="label text-muted">{cert.kind}</span>
                 <span className="text-small text-muted">{cert.issuer}</span>
@@ -24,7 +24,7 @@ export function Credentials() {
                     <span className="sr-only"> {cert.name} (opens in a new tab)</span>
                   </a>
                 ) : (
-                  <span className="font-mono text-readout break-all text-muted">ID {cert.credentialId}</span>
+                  <span className="font-mono text-readout text-muted [overflow-wrap:anywhere]">ID {cert.credentialId}</span>
                 )}
               </li>
             ))}

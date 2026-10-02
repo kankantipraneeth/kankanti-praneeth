@@ -139,16 +139,17 @@ Mobile (375): readout → name → role line → glyph (≈60vw) with a horizont
 
 ## 7. Section order (home)
 
+Shipped work leads (PRODUCT.md principle 2). Changed in Phase 8 after the critique.
+
 1. **Loader** (first visit per session only)
-2. **Hero / specimen**: name, role axis, resume + contact
-3. **About**: two summary paragraphs as a body-text specimen block, with the portrait (`/praneeth.webp`) in a single bordered cell; scroll-scrubbed opacity highlight
-4. **Selected work**: Koshetty Jewellers, Sunshine Overseas, Auto-EDA AI, WhatsApp Automation Bot, as specimen sheets, re-weighted by the role axis
-5. **More projects**: StuRequire as a compact row with `LOCAL ONLY`
+2. **Hero / specimen**: name, role line, proof line (2 live client sites · Sanity CMS + HubSpot CRM · Lighthouse accessibility 100 on mobile), resume + contact, work filter
+3. **Selected work**: Koshetty Jewellers, Sunshine Overseas, Auto-EDA AI, WhatsApp Automation Bot, as specimen sheets, re-weighted by the work filter
+4. **More projects**: StuRequire as a compact row with `LOCAL ONLY`
+5. **About**: two summary paragraphs with the portrait in a single bordered cell; scroll-scrubbed opacity highlight
 6. **Experience**: Viswam.AI internship on the baseline timeline
 7. **Skills**: glyph table, 5 groups
 8. **Certifications + Education**: credential rows
-9. **Ask about Praneeth** (Phase 7, optional): a "type tester" input; answers only from site content
-10. **Contact + footer**
+9. **Contact + footer**: availability line, copy-email, links
 
 Case studies: `/work/[slug]` for the four featured projects and StuRequire.
 

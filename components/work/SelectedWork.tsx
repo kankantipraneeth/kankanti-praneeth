@@ -41,7 +41,14 @@ export function SelectedWork() {
         // The horizontal layout exists only while this branch is active. Without JS, under reduced motion and below
         // 1024px the sheets stay a readable vertical stack. Set before measuring so scrollWidth sees the row layout.
         sectionEl.dataset.track = "horizontal";
-        const distance = () => Math.max(0, trackEl.scrollWidth - window.innerWidth);
+        // Measure to the last sheet's edge plus the track's end padding: flex overflow ignores padding-right,
+        // so scrollWidth alone left the final sheet flush against the viewport edge.
+        const distance = () => {
+          const last = trackEl.lastElementChild as HTMLElement | null;
+          if (!last) return 0;
+          const endPadding = parseFloat(getComputedStyle(trackEl).paddingRight) || 0;
+          return Math.max(0, last.offsetLeft + last.offsetWidth + endPadding - window.innerWidth);
+        };
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section.current,
